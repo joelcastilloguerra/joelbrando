@@ -571,6 +571,8 @@
       cursor: pointer;
       outline: none;
       -webkit-tap-highlight-color: transparent;
+      line-height: 0;
+      font-size: 0;
     }
     .project-card:focus, .project-card:focus-visible { outline: none; }
     .project-card.col-8 { grid-column: span 8; }
@@ -596,6 +598,8 @@
       padding: 28px;
       transform: translateY(4px);
       transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      font-size: 14px;
+      line-height: 1.7;
     }
     .project-card:hover .project-info { transform: translateY(0); }
     .project-category {
@@ -1065,6 +1069,7 @@
       border-right: 1px solid var(--border);
       padding-left: 0;
     }
+    .cs-meta-item:not(:first-child) { padding-left: 28px; }
     .cs-meta-item:last-child { border-right: none; }
     .cs-meta-label {
       font-size: 9px;
@@ -1306,6 +1311,10 @@
       .cs-hero { height: 32vh; min-height: 200px; }
       .cs-article { padding: 0 24px 80px; }
       .cs-meta { grid-template-columns: 1fr 1fr; }
+      .cs-meta-item:nth-child(2) { border-bottom: 1px solid var(--border); }
+      .cs-meta-item:first-child { border-bottom: 1px solid var(--border); }
+      .cs-meta-item:nth-child(even) { border-right: none; }
+      .cs-meta-item:nth-child(3) { padding-left: 0; }
       .cs-title-block { padding: 36px 0 28px; }
       .cs-gallery { grid-template-columns: 1fr; }
 
@@ -2132,15 +2141,15 @@
               <span class="cs-meta-label">Client</span>
               <span class="cs-meta-value">${data.client}</span>
             </div>
-            <div class="cs-meta-item" style="padding-left:28px;">
+            <div class="cs-meta-item">
               <span class="cs-meta-label">Year</span>
               <span class="cs-meta-value">${data.year}</span>
             </div>
-            <div class="cs-meta-item" style="padding-left:28px;">
+            <div class="cs-meta-item">
               <span class="cs-meta-label">Role</span>
               <span class="cs-meta-value">${data.role}</span>
             </div>
-            <div class="cs-meta-item" style="padding-left:28px;">
+            <div class="cs-meta-item">
               <span class="cs-meta-label">Agency</span>
               <span class="cs-meta-value">${data.collab || 'Independent'}</span>
             </div>
@@ -2172,6 +2181,12 @@
     document.querySelectorAll('[data-src]').forEach(el => {
       el.src = ASSETS_BASE + el.dataset.src;
     });
+
+    // ── Open case study from URL hash on load ──
+    if (location.hash) {
+      const id = location.hash.slice(1);
+      if (cases[id]) openCase(id);
+    }
 
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
