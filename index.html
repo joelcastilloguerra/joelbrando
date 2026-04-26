@@ -1,0 +1,2215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joel Brando — Graphic Designer & 3D Artist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #070709;
+      --surface: #0E0E11;
+      --surface-2: #16161A;
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(255,255,255,0.14);
+      --text-primary: #EDE9E3;
+      --text-secondary: #7A7872;
+      --text-tertiary: #4A4844;
+      --chrome: #C8C4BC;
+      --chrome-bright: #E8E4DC;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    @keyframes grain {
+      0%   { transform: translate(0, 0); }
+      10%  { transform: translate(-2%, -3%); }
+      20%  { transform: translate(3%, 1%); }
+      30%  { transform: translate(-1%, 4%); }
+      40%  { transform: translate(4%, -2%); }
+      50%  { transform: translate(-3%, 2%); }
+      60%  { transform: translate(2%, -4%); }
+      70%  { transform: translate(-4%, 1%); }
+      80%  { transform: translate(1%, 3%); }
+      90%  { transform: translate(-2%, -1%); }
+      100% { transform: translate(0, 0); }
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: -10%;
+      width: 120%;
+      height: 120%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.65;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 180px 180px;
+      animation: grain 0.8s steps(1) infinite;
+    }
+
+    /* ── Film Letterbox ── */
+    html::before, html::after {
+      content: '';
+      position: fixed;
+      left: 0; right: 0;
+      height: 7px;
+      background: #000;
+      z-index: 9998;
+      pointer-events: none;
+    }
+    html::before { top: 0; }
+    html::after  { bottom: 0; }
+
+    /* ── Lens Vignette ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9997;
+      background: radial-gradient(ellipse 115% 85% at 50% 50%, transparent 22%, rgba(0,0,0,0.58) 100%);
+    }
+
+    /* ── Hero Film Timecode ── */
+    .hero-timecode {
+      position: absolute;
+      bottom: 44px;
+      right: 48px;
+      font-size: 8px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      font-variant-numeric: tabular-nums;
+      z-index: 4;
+      opacity: 0.5;
+    }
+
+    /* ── Cinematic Hero Entrance ── */
+    @keyframes film-in {
+      from { opacity: 0; transform: translateY(10px); filter: blur(5px); }
+      to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+    }
+    .hero-eyebrow { animation: film-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both; }
+    .hero-title   { animation: film-in 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s  both; }
+    .hero-bottom  { animation: film-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.75s both; }
+    .hero-index   { animation: film-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.0s  both; }
+    .scroll-indicator { animation: film-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both; }
+
+    /* No filter blur on cards — blur fringe causes visible bottom-edge artifact */
+    .project-card.reveal-item { filter: none; }
+
+    /* ── Service Card Film Accent ── */
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--chrome), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .service-card:hover::before { opacity: 0.6; }
+
+    /* ── Btn Primary Chrome Sheen ── */
+    .btn-primary { position: relative; overflow: hidden; }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.55s ease;
+      pointer-events: none;
+    }
+    .btn-primary:hover::before { left: 160%; }
+
+
+    /* ── Typography ── */
+    h1, h2, h3, .serif {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      font-optical-sizing: auto;
+    }
+
+    .label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--text-tertiary); border-radius: 2px; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0) 100%);
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo img {
+      height: 54px;
+      width: auto;
+      filter: brightness(0.9);
+      transition: filter 0.3s ease;
+    }
+    .nav-logo:hover img { filter: brightness(1.05); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.25s ease;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--chrome-bright);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border-hover);
+      padding: 8px 20px;
+      border-radius: 2px;
+      transition: background 0.25s ease, border-color 0.25s ease !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover {
+      background: rgba(255,255,255,0.06) !important;
+      border-color: rgba(255,255,255,0.25) !important;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 72px;
+      overflow: hidden;
+      contain: layout paint;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(to top, rgba(8,8,8,1) 0%, rgba(8,8,8,0.6) 30%, transparent 60%),
+        linear-gradient(to right, rgba(8,8,8,0.85) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .hero-index {
+      position: absolute;
+      top: 120px;
+      right: 48px;
+      writing-mode: vertical-rl;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      z-index: 3;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 920px;
+    }
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .hero-eyebrow-line {
+      width: 40px;
+      height: 1px;
+      background: var(--text-tertiary);
+    }
+    .hero-title {
+      font-size: clamp(64px, 7.5vw, 120px);
+      font-weight: 400;
+      line-height: 0.95;
+      margin-bottom: 40px;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--chrome);
+    }
+    .hero-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .hero-desc {
+      max-width: 380px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-shrink: 0;
+    }
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--text-primary);
+      padding: 14px 28px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
+    .btn-primary:hover { background: var(--chrome-bright); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+    .btn-ghost:hover { color: var(--text-primary); }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 3;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    .scroll-indicator.hidden { opacity: 0; pointer-events: none; }
+    .scroll-indicator span {
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--text-tertiary), transparent);
+      animation: scroll-drop 2s ease-in-out infinite;
+    }
+    @keyframes scroll-drop {
+      0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+      40% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      80% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ── Section ── */
+    .section { padding: 96px 48px; }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 56px;
+    }
+
+    /* ── Logo Ticker ── */
+    .logo-ticker-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: relative;
+      isolation: isolate;
+      transform: translateZ(0);
+    }
+    .logo-ticker-track {
+      display: flex;
+      align-items: center;
+      height: 112px;
+      animation: ticker 44s linear infinite;
+      will-change: transform;
+    }
+    .logo-ticker-track:hover { animation-play-state: paused; }
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .logo-ticker-item {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 112px;
+      padding: 0 64px;
+      border-right: 1px solid var(--border);
+      cursor: default;
+      transition: background 0.3s ease;
+    }
+    .logo-ticker-item:hover { background: rgba(255,255,255,0.02); }
+    .logo-ticker-img {
+      height: 36px;
+      width: auto;
+      opacity: 0.38;
+      filter: grayscale(1) brightness(2);
+      mix-blend-mode: screen;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      display: block;
+    }
+    .logo-ticker-item:hover .logo-ticker-img { opacity: 0.72; transform: scale(1.06); }
+
+    /* ── Work Category Dividers ── */
+    .work-cat {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 48px 48px 16px;
+    }
+    .work-cat-num {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .work-cat-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(22px, 2.4vw, 34px);
+      font-weight: 400;
+      color: var(--text-secondary);
+      font-optical-sizing: auto;
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
+    }
+    .work-cat-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Scroll Reveal ── */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(20px);
+      filter: blur(3px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+    }
+    .reveal-item.revealed { opacity: 1; transform: translateY(0); filter: blur(0); }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-24px);
+      filter: blur(2px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+    }
+    .reveal-left.revealed { opacity: 1; transform: translateX(0); filter: blur(0); }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(24px);
+      filter: blur(2px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+    }
+    .reveal-right.revealed { opacity: 1; transform: translateX(0); filter: blur(0); }
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.94);
+      filter: blur(3px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+    }
+    .reveal-scale.revealed { opacity: 1; transform: scale(1); filter: blur(0); }
+
+
+    /* Service card clickable */
+    .service-card-link {
+      cursor: pointer;
+    }
+    .service-card-link:hover .service-title { color: var(--chrome-bright); }
+    .service-card-link::after {
+      content: '↓ View work';
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      display: block;
+      margin-top: 28px;
+      transition: color 0.3s ease, letter-spacing 0.3s ease;
+    }
+    .service-card-link:hover::after {
+      color: var(--chrome);
+      letter-spacing: 0.28em;
+    }
+
+    /* ── Services ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .service-card {
+      position: relative;
+      background: var(--surface);
+      padding: 56px 48px;
+      overflow: hidden;
+      transition: background 0.35s ease;
+      cursor: default;
+      border: 1px solid var(--border);
+    }
+    .service-card:hover { background: var(--surface-2); }
+    .service-num {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--text-tertiary);
+      margin-bottom: 40px;
+    }
+    .service-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(32px, 3vw, 48px);
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+      line-height: 1.1;
+      font-optical-sizing: auto;
+    }
+    .service-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 340px;
+      margin-bottom: 40px;
+    }
+    .service-tools { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tool-tag {
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 1px;
+      transition: border-color 0.25s ease, color 0.25s ease;
+    }
+    .service-card:hover .tool-tag { border-color: var(--border-hover); color: var(--text-secondary); }
+
+    /* ── Work Grid ── */
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+    }
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+      cursor: pointer;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .project-card:focus, .project-card:focus-visible { outline: none; }
+    .project-card.col-8 { grid-column: span 8; }
+    .project-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .project-card:hover .project-img { transform: scale(1.03); }
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(7,7,9,1) 0%, rgba(7,7,9,0.7) 20%, rgba(7,7,9,0) 58%);
+      transition: opacity 0.4s ease;
+    }
+    .project-card:hover .project-overlay { opacity: 0.85; }
+    .project-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px;
+      transform: translateY(4px);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .project-card:hover .project-info { transform: translateY(0); }
+    .project-category {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(200,196,188,0.5);
+      margin-bottom: 6px;
+    }
+    .project-name {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+    .project-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s;
+    }
+    .project-card:hover .project-sub { opacity: 1; transform: translateY(0); }
+    .project-cta {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--chrome);
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+    }
+    .project-card:hover .project-cta { opacity: 1; transform: translateY(0); }
+
+    /* ── About ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 0.6fr; gap: 80px; align-items: stretch; }
+    .about-title { font-family: 'Fraunces', serif; font-size: clamp(44px, 5vw, 80px); font-weight: 400; margin-bottom: 32px; }
+    .about-title em { font-style: italic; color: var(--chrome); }
+    .about-body { font-size: 15px; color: var(--text-secondary); line-height: 1.85; margin-bottom: 20px; }
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border-hover);
+      padding-bottom: 4px;
+      transition: border-color 0.25s ease, gap 0.25s ease;
+    }
+    .about-link:hover { border-color: var(--chrome); gap: 12px; }
+    .skills-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .skill-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      transition: padding-left 0.3s ease;
+    }
+    .skill-item:hover { padding-left: 8px; }
+    .skill-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-tertiary); flex-shrink: 0; transition: background 0.3s ease; }
+    .skill-name { font-size: 12px; letter-spacing: 0.06em; color: var(--text-secondary); }
+    .skill-item:hover .skill-dot { background: var(--chrome); }
+
+    /* ── Stats ── */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .stat-cell { background: var(--surface); padding: 40px; border: 1px solid var(--border); text-align: center; }
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 56px;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); }
+
+    /* ── Contact ── */
+    .contact-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .contact-inner { max-width: 680px; margin: 0 auto; text-align: center; padding: 120px 48px; }
+    .contact-title { font-family: 'Fraunces', serif; font-size: clamp(52px, 6vw, 96px); font-weight: 400; margin-bottom: 24px; }
+    .contact-title em { font-style: italic; color: var(--chrome); }
+    .contact-sub { font-size: 15px; color: var(--text-secondary); margin-bottom: 56px; line-height: 1.7; }
+    .contact-email {
+      display: inline-block;
+      font-family: 'Fraunces', serif;
+      font-size: clamp(22px, 2.5vw, 32px);
+      font-weight: 400;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      border-bottom: 1px solid var(--border-hover);
+      padding-bottom: 4px;
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+    .contact-email:hover { border-color: var(--chrome); color: var(--chrome-bright); }
+    .contact-details { display: flex; align-items: center; justify-content: center; gap: 32px; margin-top: 48px; flex-wrap: wrap; }
+    .contact-item { font-size: 12px; color: var(--text-tertiary); letter-spacing: 0.05em; }
+    .contact-sep { width: 1px; height: 12px; background: var(--border-hover); }
+
+    /* ── Footer ── */
+    footer { padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); }
+    footer img { height: 20px; width: auto; filter: brightness(0.5); transition: filter 0.3s ease; }
+    footer img:hover { filter: brightness(0.75); }
+    .footer-links { display: flex; gap: 32px; list-style: none; }
+    .footer-links a { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.25s ease; }
+    .footer-links a:hover { color: var(--text-secondary); }
+    .footer-copy { font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.08em; }
+
+    /* ── Social ── */
+    .social-links { display: flex; gap: 20px; align-items: center; }
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px; height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 1px;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+    }
+    .social-link:hover { border-color: var(--border-hover); color: var(--text-primary); background: rgba(255,255,255,0.04); }
+
+    /* ── Reveal animation ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { animation: fadeUp 0.6s ease both; }
+
+    /* ── Site-wide Etheral Background ── */
+    .site-etheral {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.18;
+      overflow: hidden;
+    }
+    .site-etheral-inner {
+      position: absolute;
+      inset: -15%;
+      filter: url(#etheral-filter) blur(55px);
+    }
+    .site-etheral-blob {
+      width: 100%; height: 100%;
+      background: rgba(190, 186, 180, 1);
+      mask-image: url('https://framerusercontent.com/images/ceBGguIpUU8luwByxuQz79t7To.png');
+      -webkit-mask-image: url('https://framerusercontent.com/images/ceBGguIpUU8luwByxuQz79t7To.png');
+      mask-size: 160%;
+      -webkit-mask-size: 160%;
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+      mask-position: center;
+      -webkit-mask-position: center;
+    }
+
+    /* ── Hero Video ── */
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.55;
+    }
+    .hero-vimeo-desktop,
+    .hero-vimeo-mobile {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.55;
+      display: none;
+    }
+
+    .hero-vimeo-desktop {
+      filter: blur(4px);
+    }
+
+    .hero-vimeo-mobile{
+      filter: blur(2px);
+    }
+
+
+    .hero-vimeo-desktop iframe,
+    .hero-vimeo-mobile iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: none;
+      pointer-events: none;
+    }
+    /* Desktop: landscape 16:9 */
+    .hero-vimeo-desktop iframe {
+      width: 100vw;
+      height: 56.25vw;
+      min-height: 100vh;
+      min-width: 177.78vh;
+    }
+    /* Mobile: portrait 9:16 */
+    .hero-vimeo-mobile iframe {
+      height: 100vh;
+      width: 56.25vh;
+      min-width: 100vw;
+      min-height: 177.78vw;
+    }
+    @media (min-width: 768px) {
+      .hero-vimeo-desktop { display: block; }
+    }
+    @media (max-width: 767px) {
+      .hero-vimeo-mobile { display: block; }
+    }
+
+    /* ── About Portrait ── */
+    .about-portrait-wrap {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+      height: 100%;
+    }
+    .about-portrait-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(8,8,8,0.5) 100%);
+      pointer-events: none;
+    }
+    .about-portrait {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      filter: brightness(0.92) contrast(1.06);
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .about-portrait-wrap:hover .about-portrait { transform: scale(1.02); }
+
+    /* ── Etheral Shadow ── */
+    .etheral-wrapper {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.55;
+    }
+    .etheral-inner {
+      position: absolute;
+      inset: -100px;
+      filter: url(#etheral-filter) blur(6px);
+    }
+    .etheral-blob {
+      width: 100%; height: 100%;
+      background-color: rgba(140, 130, 115, 1);
+      mask-image: url('https://framerusercontent.com/images/ceBGguIpUU8luwByxuQz79t7To.png');
+      -webkit-mask-image: url('https://framerusercontent.com/images/ceBGguIpUU8luwByxuQz79t7To.png');
+      mask-size: cover; -webkit-mask-size: cover;
+      mask-repeat: no-repeat; -webkit-mask-repeat: no-repeat;
+      mask-position: center; -webkit-mask-position: center;
+    }
+    .etheral-noise {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://framerusercontent.com/images/g0QcWrxr87K0ufOxIUFBakwYA8.png');
+      background-size: 240px;
+      background-repeat: repeat;
+      opacity: 0.3;
+      mix-blend-mode: overlay;
+    }
+
+    /* ── Case Study Full-Page Overlay ── */
+    .cs-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 400;
+      background: var(--bg);
+      overflow-y: auto;
+      overflow-x: hidden;
+      opacity: 0;
+      transform: translateY(14px);
+      pointer-events: none;
+      transition: opacity 0.42s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      scrollbar-width: thin;
+      scrollbar-color: var(--text-tertiary) transparent;
+    }
+    .cs-overlay.open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+    .cs-close-bar {
+      position: fixed;
+      top: 20px; right: 24px;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    body.case-open .cs-close-bar {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .cs-close {
+      width: 44px; height: 44px;
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-hover);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+    .cs-close:hover { background: var(--surface-2); color: var(--text-primary); border-color: rgba(255,255,255,0.2); }
+    .cs-hero {
+      position: relative;
+      height: 62vh;
+      min-height: 380px;
+      overflow: hidden;
+      background: var(--bg);
+      padding-bottom: 3px;
+    }
+    .cs-hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cs-hero-vignette {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(7,7,9,0.7) 80%, var(--bg) 100%);
+    }
+
+    /* ── Image Lightbox ── */
+    .img-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .img-lightbox.open { pointer-events: all; }
+    .img-lightbox-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      opacity: 0;
+      will-change: backdrop-filter, opacity;
+      transition:
+        opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        background 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+        backdrop-filter 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+        -webkit-backdrop-filter 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .img-lightbox.open .img-lightbox-backdrop {
+      background: rgba(0,0,0,0.62);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      opacity: 1;
+    }
+    .img-lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 0;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(18,18,18,0.85);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      opacity: 0;
+      transition: background 0.2s ease, border-color 0.2s ease, opacity 0.4s ease 0.1s;
+    }
+    .img-lightbox.open .img-lightbox-close { opacity: 1; }
+    .img-lightbox-close:hover { background: rgba(40,40,40,0.95); border-color: rgba(255,255,255,0.4); }
+    .img-lightbox > img {
+      position: relative;
+      z-index: 1;
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+      opacity: 0;
+      transform: scale(0.97);
+      transition: opacity 0.4s ease 0.08s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.08s;
+    }
+    .img-lightbox.open > img {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .cs-section-img, .cs-gallery-img { cursor: zoom-in; }
+
+    .cs-article {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 48px 100px;
+    }
+    .cs-title-block {
+      padding: 52px 0 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+    .cs-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      display: block;
+      margin-bottom: 18px;
+    }
+    .cs-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(44px, 6vw, 80px);
+      font-weight: 400;
+      line-height: 0.95;
+      color: var(--text-primary);
+      letter-spacing: -0.025em;
+      margin-bottom: 10px;
+      font-optical-sizing: auto;
+    }
+    .cs-subtitle {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      font-optical-sizing: auto;
+    }
+    .cs-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-bottom: 1px solid var(--border);
+    }
+    .cs-meta-item {
+      padding: 24px 0;
+      border-right: 1px solid var(--border);
+      padding-left: 0;
+    }
+    .cs-meta-item:last-child { border-right: none; }
+    .cs-meta-label {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      display: block;
+      margin-bottom: 7px;
+    }
+    .cs-meta-value {
+      font-size: 13px;
+      color: var(--text-primary);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+    .cs-overview {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(17px, 1.6vw, 21px);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding: 52px 0 52px;
+      border-bottom: 1px solid var(--border);
+      font-optical-sizing: auto;
+    }
+    .cs-section {
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cs-section:last-of-type { border-bottom: none; }
+    .cs-section-num {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      display: block;
+      margin-bottom: 12px;
+    }
+    .cs-section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(22px, 2.2vw, 30px);
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 20px;
+      font-optical-sizing: auto;
+      letter-spacing: -0.01em;
+    }
+    .cs-section-body {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.9;
+      max-width: 640px;
+    }
+    .cs-section-img {
+      width: 100%;
+      display: block;
+      margin-top: 32px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+    .cs-gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      margin-top: 32px;
+    }
+    .cs-gallery-3 {
+      grid-template-columns: 1fr 1fr 1fr;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90vw;
+      gap: 3px;
+    }
+    @media (max-width: 900px) {
+      .cs-gallery-3 {
+        width: 100%;
+        left: 0;
+        transform: none;
+        grid-template-columns: 1fr;
+      }
+    }
+    .cs-gallery-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--border);
+    }
+    /* Equal-height rule: first image defines row height, second crops to match */
+    .cs-gallery-2 .cs-gallery-img {
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .cs-gallery-2 .cs-gallery-img:first-child {
+      height: auto;
+    }
+    .cs-gallery-1 {
+      grid-template-columns: 1fr;
+      width: 90vw;
+      margin-left: calc(50% - 45vw);
+    }
+    .cs-gallery-2 {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80vw;
+    }
+    @media (max-width: 900px) {
+      .cs-gallery-1 {
+        width: 100%;
+        margin-left: 0;
+      }
+      .cs-gallery-2 {
+        width: 100%;
+        left: 0;
+        transform: none;
+      }
+    }
+    .cs-section-video {
+      display: block;
+      max-height: 72vh;
+      width: auto;
+      max-width: 100%;
+      margin: 32px auto 0;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .cs-install-video {
+      display: block;
+      width: 100%;
+      height: 52vh;
+      object-fit: cover;
+      object-position: center;
+      margin-top: 32px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .cs-bts-wrap {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .cs-bts-label {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 10px;
+    }
+    .cs-section-body p + p { margin-top: 18px; }
+    .cs-tools-row {
+      padding: 40px 0 0;
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+    }
+    .cs-tools-label {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      display: block;
+      margin-bottom: 14px;
+    }
+    .cs-tools-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .cs-tool-tag {
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 1px;
+      transition: border-color 0.25s ease, color 0.25s ease;
+    }
+    .cs-tool-tag:hover { border-color: var(--border-hover); color: var(--text-secondary); }
+    .cs-collab {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 16px;
+      letter-spacing: 0.05em;
+    }
+    .cs-collab span { color: var(--text-secondary); }
+    .cs-section-agency {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 20px;
+    }
+    .cs-section-agency span { color: var(--text-secondary); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 0 24px 64px; }
+      .hero-title { font-size: clamp(48px, 10vw, 80px); }
+      .hero-bottom { flex-direction: column; align-items: flex-start; }
+      .section { padding: 64px 24px; }
+
+      /* Services: stack with gap and correct margin */
+      .services-grid { grid-template-columns: 1fr; gap: 12px; margin: 0 24px 12px !important; border: none !important; }
+      .service-card { border: 1px solid var(--border); }
+
+      /* Scroll indicator: hide on mobile */
+      .scroll-indicator { display: none; }
+
+      /* Work grid: single column, full-bleed, spaced */
+      .work-grid { grid-template-columns: 1fr; gap: 8px; margin: 0 !important; }
+      .project-card.col-7, .project-card.col-5,
+      .project-card.col-4, .project-card.col-6,
+      .project-card.col-8 { grid-column: span 1; }
+      .project-info { transform: translateY(0); padding: 20px; }
+      .project-sub { opacity: 1; transform: translateY(0); }
+      .project-overlay {
+        background: linear-gradient(to top, rgba(7,7,9,1) 0%, rgba(7,7,9,1) 4%, rgba(7,7,9,0.55) 50%, transparent 100%);
+      }
+      .project-category { color: rgba(200,196,188,0.7); }
+
+      /* Work category headers */
+      .work-cat { margin: 32px 24px 8px; }
+
+      /* About: portrait above text on mobile */
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+      .about-grid .reveal-right { order: -1; height: auto; }
+      .about-portrait-wrap { height: 480px; margin: 0 -24px; }
+      .about-portrait { height: 100%; }
+
+      .stats-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 24px; text-align: center; }
+      .cs-article { padding: 0 24px 80px; }
+      .cs-meta { grid-template-columns: 1fr 1fr; }
+      .cs-title-block { padding: 36px 0 28px; }
+      .cs-gallery { grid-template-columns: 1fr; }
+
+      /* Logo ticker: tighter padding, bigger logos, faster scroll */
+      .logo-ticker-track { animation-duration: 10s; height: 72px; }
+      .logo-ticker-item { padding: 0 20px; height: 72px; }
+      .logo-ticker-img { height: 26px; }
+
+      /* Reduce gap between logo ticker and What I do */
+      #services { padding-top: 40px !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── SITE ETHERAL BACKGROUND ── -->
+  <div class="site-etheral" aria-hidden="true">
+    <div class="site-etheral-inner">
+      <div class="site-etheral-blob"></div>
+    </div>
+  </div>
+
+  <!-- ── NAVIGATION ── -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">
+      <img src="brand_assets/Joel-Brando_logo_3D_grain.webp" alt="Joel Brando" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li>
+        <a href="#contact" class="nav-cta">Get in touch</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ── ETHERAL SHADOW FILTER ── -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+    <defs>
+      <filter id="etheral-filter" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+        <feTurbulence result="undulation" numOctaves="2" baseFrequency="0.0005,0.002" seed="0" type="turbulence"/>
+        <feColorMatrix id="etheral-hue" in="undulation" type="hueRotate" values="180"/>
+        <feColorMatrix in="dist" result="circulation" type="matrix" values="4 0 0 0 1  4 0 0 0 1  4 0 0 0 1  1 0 0 0 0"/>
+        <feDisplacementMap in="SourceGraphic" in2="circulation" scale="100" result="dist"/>
+        <feDisplacementMap in="dist" in2="undulation" scale="100" result="output"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="home">
+    <!-- Desktop hero video (landscape) -->
+    <div class="hero-vimeo-desktop">
+      <iframe src="https://player.vimeo.com/video/1186165525?background=1&autoplay=1&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <!-- Mobile hero video (portrait) -->
+    <div class="hero-vimeo-mobile">
+      <iframe src="https://player.vimeo.com/video/1186165078?background=1&autoplay=1&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <div class="hero-bg"></div>
+
+    <div class="etheral-wrapper">
+      <div class="etheral-inner">
+        <div class="etheral-blob"></div>
+      </div>
+      <div class="etheral-noise"></div>
+    </div>
+
+    <span class="hero-index label">Amsterdam, NL</span>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span class="label">Available for freelance</span>
+      </div>
+      <h1 class="hero-title">
+        Graphic<br/>
+        Designer &amp;<br/>
+        <em>3D Artist</em>
+      </h1>
+      <div class="hero-bottom">
+        <p class="hero-desc">
+          10+ years of experience crafting visually striking work for global brands — from immersive 3D campaigns to sharp graphic identities.
+        </p>
+        <div class="hero-actions">
+          <a href="#work" class="btn-ghost">
+            View Work
+          </a>
+          <a href="#contact" class="btn-primary">
+            Let's talk
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ── LOGO TICKER ── -->
+  <div class="logo-ticker-wrap">
+    <div class="logo-ticker-track">
+      <!-- Set 1 -->
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/a16d24da-12ac-4805-bbf2-606391de17ce/Artboard+1S%26S.png?format=300w" alt="Scotch &amp; Soda"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/c51193cd-a36d-43f7-94b7-c0fb043b2e42/HM.png?format=300w" alt="H&amp;M"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/f7a5d563-529a-4181-9959-93656ae7dfa9/Artboard+1Puma.png?format=300w" alt="Puma"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/e17c2a38-858c-4ee1-91d5-8b0349f8fa4e/Artboard+1RB.png?format=300w" alt="Red Bull"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/e6448e3a-f9bb-488f-a558-448a429cf7b7/Artboard+1TH.png?format=300w" alt="Tommy Hilfiger"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/9495a3fa-343d-4243-bb78-84df5179cb0d/Artboard+1Polaroid.png?format=300w" alt="Polaroid"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/80ca85dc-2623-421f-9ebe-ef43490f661f/Artboard+1Patagonia.png?format=300w" alt="Patagonia"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/c948ff46-408f-4850-b46b-97501ae96880/Artboard+1DJ.png?format=300w" alt="Don Julio"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/57b9ee14-4cf9-4012-9399-bfd1dc5dc3b2/Artboard+1Mizuno.png?format=300w" alt="Mizuno"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/b4cea152-1dfa-444d-a653-59db3e05bc2c/Artboard+1FG.png?format=300w" alt="Five Guys"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/900b2b08-2f2b-4ee8-86db-afde083cc65e/Artboard+1JW.png?format=300w" alt="Johnnie Walker"></div>
+      <!-- Set 2 — duplicate for seamless loop -->
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/a16d24da-12ac-4805-bbf2-606391de17ce/Artboard+1S%26S.png?format=300w" alt="Scotch &amp; Soda"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/c51193cd-a36d-43f7-94b7-c0fb043b2e42/HM.png?format=300w" alt="H&amp;M"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/f7a5d563-529a-4181-9959-93656ae7dfa9/Artboard+1Puma.png?format=300w" alt="Puma"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/e17c2a38-858c-4ee1-91d5-8b0349f8fa4e/Artboard+1RB.png?format=300w" alt="Red Bull"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/e6448e3a-f9bb-488f-a558-448a429cf7b7/Artboard+1TH.png?format=300w" alt="Tommy Hilfiger"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/9495a3fa-343d-4243-bb78-84df5179cb0d/Artboard+1Polaroid.png?format=300w" alt="Polaroid"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/80ca85dc-2623-421f-9ebe-ef43490f661f/Artboard+1Patagonia.png?format=300w" alt="Patagonia"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/c948ff46-408f-4850-b46b-97501ae96880/Artboard+1DJ.png?format=300w" alt="Don Julio"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/57b9ee14-4cf9-4012-9399-bfd1dc5dc3b2/Artboard+1Mizuno.png?format=300w" alt="Mizuno"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/b4cea152-1dfa-444d-a653-59db3e05bc2c/Artboard+1FG.png?format=300w" alt="Five Guys"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/900b2b08-2f2b-4ee8-86db-afde083cc65e/Artboard+1JW.png?format=300w" alt="Johnnie Walker"></div>
+    </div>
+  </div>
+
+  <!-- ── SERVICES ── -->
+  <section class="section" id="services" style="padding-top: 96px; padding-bottom: 2px; position: relative; overflow: hidden;">
+    <!-- Chrome decorative orb -->
+    <div class="section-header" style="position:relative;z-index:1;">
+      <h2 style="font-size: clamp(36px,4vw,60px);" class="reveal-item">What I do</h2>
+      <span class="label reveal-item" data-delay="100">Services</span>
+    </div>
+  </section>
+
+  <div class="services-grid" style="margin: 0 48px 2px; border: 1px solid var(--border);">
+    <div class="service-card service-card-link reveal-item" onclick="(function(){var e=document.getElementById('work-3d');window.scrollTo({top:e.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'});})()">
+      <div class="service-num label">01</div>
+      <h3 class="service-title">3D Design<br/>&amp; <em style="font-style:italic; color:var(--chrome)">Motion</em></h3>
+      <p class="service-desc">Transforming ideas into high-end 3D animations and VFX. Specialized in building realistic digital scenes and seamlessly blending 3D elements with real-world footage.</p>
+    </div>
+    <div class="service-card service-card-link reveal-item" data-delay="100" onclick="(function(){var e=document.getElementById('work-graphic');window.scrollTo({top:e.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'});})()">
+      <div class="service-num label">02</div>
+      <h3 class="service-title">Graphic<br/><em style="font-style:italic; color:var(--chrome)">Design</em></h3>
+      <p class="service-desc">Combining visuals and ideas to create impactful work that captures attention — from brand identities to retail campaigns and packaging.</p>
+    </div>
+  </div>
+
+  <!-- ── WORK ── -->
+  <section class="section" id="work" style="padding-bottom: 16px;">
+    <div class="section-header">
+      <h2 style="font-size: clamp(36px,4vw,60px);">Selected Work</h2>
+      <span class="label">Portfolio — 2022–2025</span>
+    </div>
+  </section>
+
+  <!-- 3D Design & Motion -->
+  <div class="work-cat reveal-item" id="work-3d">
+    <span class="work-cat-num">01</span>
+    <h3 class="work-cat-title">3D Design &amp; Motion</h3>
+    <div class="work-cat-line"></div>
+  </div>
+
+  <div class="work-grid" style="margin: 0 48px;">
+    <!-- Row 1: 7 + 5 -->
+    <div class="project-card col-6 reveal-item" data-case="hm" onclick="openCase(this.dataset.case)">
+      <video class="project-img" src="website_assets/Selected%20work/Beauty/hm-beauty-card-thumb.mp4" autoplay loop muted playsinline style="aspect-ratio:3/2; object-position:top;"></video>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-category">3D · VFX · FOOH</p>
+        <h3 class="project-name">Beauty</h3>
+        <p class="project-sub">FOOH campaign series for beauty brands across European cities</p>
+        <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+    </div>
+    <div class="project-card col-6 reveal-item" data-delay="100" data-case="five-guys" onclick="openCase(this.dataset.case)">
+      <video class="project-img" src="website_assets/Selected%20work/Five%20Guys/five-guys-card-thumb.mp4" autoplay loop muted playsinline style="aspect-ratio:3/2;"></video>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-category">3D · Brand · FOOH</p>
+        <h3 class="project-name">Five Guys</h3>
+        <p class="project-sub">Product launches, Stockholm opening FOOH, and milkshake animations</p>
+        <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+    </div>
+
+    <!-- Row 2: 5 + 7 -->
+    <div class="project-card col-6 reveal-item" data-case="sightings" onclick="openCase(this.dataset.case)">
+      <video class="project-img" src="website_assets/Selected%20work/Other/sightings-card-thumb.mp4" autoplay loop muted playsinline style="aspect-ratio:3/2;"></video>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-category">3D · VFX · FOOH</p>
+        <h3 class="project-name">In the Wild</h3>
+        <p class="project-sub">FOOH work across clients, cities, and categories</p>
+        <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+    </div>
+    <div class="project-card col-6 reveal-item" data-delay="100" data-case="personal" onclick="openCase(this.dataset.case)">
+      <video class="project-img" src="website_assets/Selected%20work/Personal/personal-card-thumb.mp4" autoplay loop muted playsinline style="aspect-ratio:3/2;"></video>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-category">3D · Art Direction · Print</p>
+        <h3 class="project-name">Personal Work — 3D</h3>
+        <p class="project-sub">Experimental 3D and CGI made outside of client briefs</p>
+        <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graphic Design -->
+  <div class="work-cat reveal-item" id="work-graphic" style="margin-top: 56px;">
+    <span class="work-cat-num">02</span>
+    <h3 class="work-cat-title">Graphic Design</h3>
+    <div class="work-cat-line"></div>
+  </div>
+
+  <div class="work-grid" style="margin: 0 48px;">
+    <!-- Row 1: 6 + 6 -->
+    <div class="project-card col-6 reveal-item" data-case="tommy-pride" onclick="openCase(this.dataset.case)">
+      <img class="project-img" src="website_assets/Selected%20work/Tommy%20Hilfiger/ezgif-66ac8c9f763915.gif" alt="Tommy Pride" style="aspect-ratio:3/2;" />
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-category">Graphic · Retail · Campaign</p>
+        <h3 class="project-name">Tommy Pride</h3>
+        <p class="project-sub">In-store Pride campaign across European locations</p>
+        <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+    </div>
+    <div class="project-card col-6 reveal-item" data-delay="100" data-case="johnnie-walker" onclick="openCase(this.dataset.case)">
+      <img class="project-img" src="website_assets/Selected%20work/Johnnie%20Walker/IMGL3923.webp" alt="Johnnie Walker Blue Label × Friandries" style="aspect-ratio:3/2;" />
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-category">Packaging · Luxury · Brand Collaboration</p>
+        <h3 class="project-name">Johnnie Walker</h3>
+        <p class="project-sub">Blue Label × Friandries — luxury gift packaging</p>
+        <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+    </div>
+
+    <!-- Row 2: 6 + 6 -->
+    <div class="project-card col-6 reveal-item" data-case="posters" onclick="openCase(this.dataset.case)">
+      <img class="project-img" src="website_assets/Selected%20work/Posters/DotInk_James_Dean_Poster_5512x7874px.webp" alt="Print Work" style="aspect-ratio:3/2; object-position: top;" />
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-category">Poster · Print · Various</p>
+        <h3 class="project-name">Print Work</h3>
+        <p class="project-sub">Tommy Hilfiger, James Dean &amp; CitizenM NYC</p>
+        <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+    </div>
+    <div class="project-card col-6 reveal-item" data-delay="100" data-case="personal-graphic" onclick="openCase(this.dataset.case)">
+      <img class="project-img" src="website_assets/Selected%20work/Personal%20graphic%20work/ISSEY-87.webp" alt="Personal Work — Graphic" style="aspect-ratio:3/2;" />
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-category">Graphic · Personal · Poster</p>
+        <h3 class="project-name">Personal Work — Graphic</h3>
+        <p class="project-sub">Self-initiated poster work and graphic experiments</p>
+        <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ── -->
+  <section class="section" id="about" style="position:relative;overflow:hidden;">
+    <!-- Chrome decorative sphere behind right column -->
+    <div class="about-grid">
+      <div class="reveal-left" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <span class="label" style="display:block; margin-bottom: 24px;">Tools &amp; Software</span>
+          <div class="skills-list">
+            <div class="skill-item"><span class="skill-name">Blender</span><span class="skill-dot"></span></div>
+            <div class="skill-item"><span class="skill-name">Houdini</span><span class="skill-dot"></span></div>
+            <div class="skill-item"><span class="skill-name">Photoshop</span><span class="skill-dot"></span></div>
+            <div class="skill-item"><span class="skill-name">Illustrator</span><span class="skill-dot"></span></div>
+            <div class="skill-item"><span class="skill-name">After Effects</span><span class="skill-dot"></span></div>
+            <div class="skill-item"><span class="skill-name">Figma</span><span class="skill-dot"></span></div>
+            <div class="skill-item"><span class="skill-name">DaVinci Resolve</span><span class="skill-dot"></span></div>
+            <div class="skill-item"><span class="skill-name">InDesign</span><span class="skill-dot"></span></div>
+          </div>
+        </div>
+        <div style="margin-top: 48px;">
+          <span class="label" style="display:block; margin-bottom: 24px;">About me</span>
+          <h2 class="about-title">
+            Crafting work that<br/>
+            <em>moves people</em>
+          </h2>
+          <p class="about-body">
+            Based in Amsterdam, I'm a graphic designer and 3D artist with over a decade of experience creating visually striking work for global brands. My background spans three years inside agencies, giving me a sharp eye for both craft and client strategy.
+          </p>
+          <p class="about-body">
+            From immersive Fake Out of Home campaigns to precise brand identities, I blend creativity with technical skill to bring bold visions to life — across screens, spaces, and surfaces.
+          </p>
+          <a href="#contact" onclick="event.preventDefault();document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="about-link">
+            Get in touch
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="reveal-right" data-delay="120">
+        <div class="about-portrait-wrap">
+          <img src="website_assets/self-portrait-BW-Lowres.webp" alt="Joel Brando" class="about-portrait" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <div class="contact-section" id="contact" style="position:relative;overflow:hidden;">
+    <div class="contact-inner" style="position:relative;z-index:1;">
+      <span class="label reveal-item" style="display:block; margin-bottom: 20px;">Let's Work Together</span>
+      <h2 class="contact-title reveal-item" data-delay="80">Have a project<br/><em>in mind?</em></h2>
+      <p class="contact-sub reveal-item" data-delay="160">Open to freelance projects, collaborations, and exciting briefs. Let's create something worth talking about.</p>
+      <a href="mailto:info@joelbrando.com" class="contact-email reveal-item" data-delay="240">info@joelbrando.com</a>
+      <div class="contact-details">
+        <span class="contact-item">+31 6 8178 4952</span>
+        <div class="contact-sep"></div>
+        <span class="contact-item">Amsterdam, Netherlands</span>
+        <div class="contact-sep"></div>
+        <div class="social-links">
+          <a href="https://www.instagram.com/byjoelbrando" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/joelcastilloguerra/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+    </div><!-- /contact-inner -->
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <a href="#">
+      <img src="brand_assets/Joel-Brando_logo_3D_grain.webp" alt="Joel Brando" />
+    </a>
+    <ul class="footer-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <span class="footer-copy">&copy; <script>document.write(/\d{4}/.exec(Date())[0])</script> Joel Brando. All rights reserved.</span>
+  </footer>
+
+  <!-- ── CURSOR GLOW ── -->
+
+  <!-- ── CASE STUDY CLOSE BUTTON (outside overlay to escape transform stacking context) ── -->
+  <div class="cs-close-bar">
+    <button class="cs-close" onclick="closeCase()" aria-label="Close case study">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ── CASE STUDY FULL-PAGE OVERLAY ── -->
+  <div id="cs-overlay" class="cs-overlay" role="dialog" aria-modal="true" aria-label="Case Study">
+    <div id="cs-content"></div>
+  </div>
+
+  <!-- ── IMAGE LIGHTBOX ── -->
+  <div id="img-lightbox" class="img-lightbox" role="dialog" aria-modal="true" aria-label="Full-size image">
+    <div class="img-lightbox-backdrop" id="img-lightbox-backdrop"></div>
+    <button class="img-lightbox-close" id="img-lightbox-close" aria-label="Close image">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <img id="img-lightbox-img" src="" alt="" />
+  </div>
+
+  <script>
+    // ── Nav scroll effect ──
+    const nav = document.getElementById('nav');
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+      if (scrollIndicator) scrollIndicator.classList.toggle('hidden', window.scrollY > 80);
+    }, { passive: true });
+
+    // ── Scroll reveal ──
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const delay = parseInt(el.dataset.delay || '0');
+          setTimeout(() => el.classList.add('revealed'), delay);
+          revealObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.reveal-item, .reveal-left, .reveal-right, .reveal-scale').forEach(el => revealObserver.observe(el));
+
+    // ── Etheral Shadow animation ──
+    (function() {
+      const hueEl = document.getElementById('etheral-hue');
+      if (!hueEl) return;
+      const DEG_PER_MS = 360 / (5.82 * 1000);
+      let hue = 180, last = null;
+      function tick(ts) {
+        if (last !== null) {
+          hue = (hue + DEG_PER_MS * (ts - last)) % 360;
+          hueEl.setAttribute('values', hue.toFixed(2));
+        }
+        last = ts;
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    })();
+
+    // ── Case Study Data ──
+    const BASE = 'https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/';
+    const cases = {
+      'hm': {
+        title: 'Beauty',
+        subtitle: 'FOOH Campaign Series',
+        category: '3D · VFX · FOOH',
+        client: 'H&M / Sokos',
+        year: '2024–2025',
+        role: 'VFX & Compositing',
+        collab: 'Locus Solus Studio',
+        heroImg: BASE + '482ca887-68be-48af-8eb7-0b1beea8333b/ezgif-8a953634f6729c.gif',
+        heroVideo: 'website_assets/Selected%20work/Beauty/hm-beauty-card-thumb.mp4',
+        heroPosition: 'top',
+        tools: ['Blender', 'Octane', 'SynthEyes', 'DaVinci Resolve'],
+        overview: 'A series of Fake Out of Home campaign films for H&M Beauty and partner brands — blending 3D and real-world footage to bring beauty product launches to life across European cities.',
+        sections: [
+          {
+            title: 'Store Loading',
+            date: 'December 2024',
+            body: 'A FOOH film for H&M Beauty, capturing the moment product deliveries arrive at the store — a campaign built around the retail drop as spectacle.\n\nSince the store was still under construction at the time of production, a full 3D recreation of the building facade was built from reference photography to bring the concept to life. I handled the VFX integration and compositing, merging the 3D environment seamlessly with real-world footage.',
+            video: 'website_assets/Selected%20work/Beauty/V3-blur.mov'
+          },
+          {
+            title: 'Maybelline × H&M Beauty — Light as Air',
+            date: 'March 2025',
+            body: 'Maybelline partnered with H&M Beauty to promote their new foundation — the kind that feels weightless on your skin. To translate that promise into something you can actually see, we used VFX to make the products float effortlessly through the store environment.\n\nThe challenge was keeping the floatation believable rather than jarring — every product needed to feel like it genuinely belonged mid-air. I worked on the VFX integration and compositing, blending 3D-tracked product animation with live store footage.',
+            video: 'website_assets/Selected%20work/Beauty/Maybelline_V03.mp4'
+          },
+          {
+            title: 'Sokos × Moira — Amsterdam Central',
+            date: 'October 2025',
+            body: 'For Finnish beauty retailer Sokos, a Fake Out of Home video was created to launch Moira\'s makeup line — brought to life at Amsterdam Central. \n\nThe concept leans into the scale of the location: Moira\'s bold colour palette spilling across the station\'s architecture, turning a familiar landmark into something unexpected. Rendered in Blender Octane for maximum visual fidelity.',
+            video: 'website_assets/Selected%20work/Beauty/Moira_V02.mp4'
+          }
+        ]
+      },
+      'five-guys': {
+        title: 'Five Guys',
+        subtitle: '3D Campaign Series',
+        category: '3D · Brand · FOOH',
+        client: 'Five Guys',
+        year: '2025–2026',
+        role: '3D Design & Animation',
+        collab: null,
+        heroImg: BASE + 'a09afd45-381f-4650-8b3b-19965d5be280/ezgif-134aadc31e1e3d.gif',
+        heroVideo: 'website_assets/Selected%20work/Five%20Guys/five-guys-card-thumb.mp4',
+        tools: ['Blender', 'Houdini', 'Photoshop', 'Illustrator', 'SynthEyes', 'DaVinci Resolve'],
+        overview: 'An ongoing series of 3D campaign films for Five Guys — from a Combideal debut and a cherry shake launch to a Fake Out of Home video marking their first Scandinavian opening.',
+        sections: [
+          {
+            title: 'Combideal Debut',
+            date: 'June 2025',
+            body: 'For the launch of Five Guys\' first combo deal menu, I developed a campaign film to introduce the new offer across their digital channels.\n\nThe food needed to look both photorealistic and irresistible — playful in tone, but never cartoonish. Houdini (a 3D VFX software) handled the simulation work: fries cascading into frame, a drink bursting with energy. Every element was lit individually for maximum control before being composited into a cohesive final look. The layout was also built with versioning in mind — clear space for copy means the film can be adapted into multiple languages without a re-edit.',
+            video: 'website_assets/Selected%20work/Five%20Guys/Five-Guys_Combideal_V04.2-nograin-5noise-no-copy.mp4',
+            btsVideo: 'website_assets/Selected%20work/Five%20Guys/FG%20Combideal%20-%20Breakdown.mp4'
+          },
+          {
+            title: 'Cherry Shake',
+            date: 'April 2026',
+            body: 'For the launch of their new cherry shake, Five Guys needed a film that could hold its own across social channels and in-store POS screens.\n\nThe approach was deliberately cinematic — a liquid-simulation-heavy animation built in Houdini and Blender, structured around slow motion so the cherry and liquid had room to move with real drama. The deep red palette carries the mood, letting the colour do the talking. Built to stop the scroll.',
+            video: 'website_assets/Selected%20work/Five%20Guys/Five-Guys_Cherry_1920x1080.mp4'
+          },
+          {
+            title: 'Stockholm Opening',
+            date: 'February 2025',
+            body: 'For the first Five Guys opening in Scandinavia, they wanted to go big. The concept came from the brand\'s most iconic detail: the brown paper bag of fries, always overflowing.\n\nWorking with drone footage captured at the new Stockholm location, the building above the restaurant was transformed into a giant brown bag — and then the fries exploded across the scene. Camera tracking was handled in SynthEyes, 3D integration in Blender, and Houdini (3D VFX software) drove the large-scale fry simulation. The result landed far beyond Stockholm on social.',
+            video: 'website_assets/Selected%20work/Five%20Guys/Five-Guys_Stockholm_FOOH_V5_With-Sound.mp4'
+          }
+        ]
+      },
+      'sightings': {
+        title: 'In the Wild',
+        subtitle: 'Selected FOOH Work',
+        category: '3D · VFX · FOOH',
+        client: 'Various',
+        year: '2024',
+        role: '3D & VFX',
+        collab: 'Various',
+        heroImg: null,
+        heroVideo: 'website_assets/Selected%20work/Other/sightings-card-thumb.mp4',
+        tools: ['Blender', 'SynthEyes', 'DaVinci Resolve'],
+        overview: 'FOOH work across clients, cities, and categories — a collection that doesn\'t belong to a single campaign series, but demonstrates the same eye across different briefs.',
+        sections: [
+          {
+            title: 'Pepsi — Zero Sugar',
+            date: '2024',
+            collab: 'Unit9',
+            body: 'A FOOH billboard for Pepsi Zero Sugar, placed in the streets of Paris.\n\nThe animation uses chrome-plated botanicals and fruit forms drifting across a vivid pink backdrop — keeping the visual language bold and premium while referencing the flavours of the product. Composited into real street footage for the final delivery.',
+            video: 'website_assets/Selected%20work/Other/Pepsi_Billboard_V06.mp4'
+          },
+          {
+            title: 'NockNock Art Fair',
+            date: '2024',
+            collab: null,
+            body: 'A FOOH announcement for NockNock, an independent art fair held in Amsterdam.\n\nGiant art supplies — spray cans, canvases, brushes, rulers — erupt from the top of the venue\'s iconic cylindrical industrial building, turning the landmark itself into an advertisement for what\'s happening inside.',
+            video: 'website_assets/Selected%20work/Other/NockNockArtfair_FOOH_V2.1_Joel_Brando.mp4'
+          },
+          {
+            title: 'Sokos — Christmas',
+            date: '2024',
+            collab: 'Locus Solus Studio',
+            body: 'A Christmas FOOH campaign for Finnish department store Sokos.\n\nTheir flagship Helsinki building is transformed into a giant gift — wrapped in dark satin fabric, tied with a red bow, snow settling across the scene. The store becomes the present. Made in Blender with particle simulation for the snowfall.',
+            video: 'website_assets/Selected%20work/Other/V6_02.mov'
+          }
+        ]
+      },
+      'personal': {
+        title: 'Personal Work — 3D',
+        subtitle: 'Experimental 3D & CGI',
+        category: '3D · Art Direction · Print',
+        client: 'Personal',
+        year: '2022–2025',
+        role: 'Art Direction & 3D',
+        collab: null,
+        heroImg: 'website_assets/Selected%20work/Personal/thousand-eyes.webp',
+        heroVideo: 'website_assets/Selected%20work/Personal/personal-card-thumb.mp4',
+        tools: ['Blender', 'Octane', 'Houdini', 'Photoshop', 'Illustrator'],
+        overview: 'A collection of personal 3D and design work — the experiments, the self-directed pieces, and the work made purely because it needed to exist. No brief, no client, no constraints.',
+        sections: [
+          {
+            title: 'Time is a Contemporary Fetish',
+            date: '2024',
+            body: 'A looping animated piece exploring the modern obsession with time — measured, spent, performed.\n\nTime is treated less as a resource and more as a ritual object: something to be accumulated, displayed, and ultimately consumed. The loop is intentional. Made in Blender.',
+            video: 'website_assets/Selected%20work/Personal/Time_is_a_contemporary_fetish.mp4'
+          },
+          {
+            title: 'Chrome Studies — Surface & Skin',
+            date: '2023–2024',
+            body: 'A series of personal renders exploring material contrast — chrome, crystal and reflective surfaces placed in direct tension with organic human form.\n\nEach piece is an exercise in lighting and material fidelity, using Cycles to push physically accurate renders as far as possible. Skin as surface. Surface as skin.',
+            gallery: [
+              'website_assets/Selected%20work/Personal/thousand-eyes.webp',
+              'website_assets/Selected%20work/Personal/diamond-head-final.webp'
+            ],
+            galleryAspect: '2/3'
+          },
+          {
+            title: 'Poster Studies',
+            date: '2022–2024',
+            body: 'Experimental poster work made outside of client briefs — a space to push layout, collage, and visual density to places briefs rarely allow.\n\nEach piece mixes 3D renders, photography, typography, and found imagery. Influences range from Letraset-era print to underground zine culture.',
+            gallery: [
+              'website_assets/Selected%20work/Personal/legacy-poster-by-joel-castillo-guerra-%40joelbrando_v6.webp',
+              'website_assets/Selected%20work/Personal/drive-my-car-by-joel-castillo-guerra.webp',
+              'website_assets/Selected%20work/Personal/falling-poster-by-joel-castillo-guerra.webp'
+            ]
+          }
+        ]
+      },
+      'tommy-pride': {
+        title: 'Tommy Pride',
+        subtitle: 'In-Store Campaign',
+        category: 'Graphic Design · Retail',
+        client: 'Tommy Hilfiger',
+        year: 'September 2022',
+        role: 'Graphic Design',
+        collab: 'Colourcake',
+        heroImg: 'website_assets/Selected%20work/Tommy%20Hilfiger/ezgif-66ac8c9f763915.gif',
+        tools: ['Blender', 'Photoshop', 'Illustrator', 'InDesign'],
+        overview: 'In-store campaign for Tommy Hilfiger during Pride, designed to highlight the Tommy Photobooth and celebrate self-expression through colour and inclusivity.',
+        sections: [
+          {
+            title: 'The Posters',
+            date: 'September 2022',
+            body: 'To promote the Tommy Photobooth during Pride, I designed two in-store posters — each in a different style to reflect the diversity of the audience.\n\nOne is bold and expressive: loud typography, Polaroid snapshots, a rainbow arc sweeping across the frame. The other is more minimal — clean layout, product-led, refined. Both use the rainbow to celebrate inclusivity while staying fully on-brand. The goal was to grab attention, invite people to snap a photo, and share the moment.',
+            gallery: [
+              'website_assets/Selected%20work/Tommy%20Hilfiger/POS-01%20%281%29.webp',
+              'website_assets/Selected%20work/Tommy%20Hilfiger/POS-0212%20%281%29.webp'
+            ]
+          },
+          {
+            title: 'Stickers & Badges',
+            date: null,
+            body: 'Alongside the main posters, a set of stickers and badge designs extended the campaign into shareable print assets — giving the Pride activation something tactile and collectible in-store.',
+            img: 'website_assets/Selected%20work/Tommy%20Hilfiger/Artboard%2B1.webp'
+          }
+        ]
+      },
+      'johnnie-walker': {
+        title: 'Johnnie Walker',
+        subtitle: 'Blue Label × Friandries',
+        category: 'Packaging Design · Brand Collaboration',
+        client: 'Johnnie Walker / Diageo',
+        year: '2024',
+        role: 'Art Direction · Packaging Design',
+        collab: 'Colourcake',
+        heroImg: 'website_assets/Selected%20work/Johnnie%20Walker/IMGL3923.webp',
+        heroPosition: 'center',
+        tools: ['Illustrator', 'Photoshop', 'Blender'],
+        overview: 'A limited-edition gift box designed for the collaboration between Johnnie Walker Blue Label and Friandries Chocolates — a piece built to be kept, not thrown away. Deep navy, gold foil, marbled interiors, and a box construction worthy of what\'s inside.',
+        sections: [
+          {
+            title: 'The Packaging',
+            date: '2024',
+            body: 'The brief called for something that felt at home next to a bottle of Blue Label — which means it needed to earn its shelf space. The result is a rigid navy box dressed in signature JW typography, with metallic turquoise script wrapping the exterior edge and a marble-pattern interior that echoes the slow swirl of a fine Scotch.\n\nGold foil stamping carries the Blue Label wordmark. The Friandries name sits below in a clean serif — confident enough to share the stage without competing.',
+            gallery: [
+              'website_assets/Selected%20work/Johnnie%20Walker/IMGL3923.webp',
+              'website_assets/Selected%20work/Johnnie%20Walker/IMGL3907.webp'
+            ]
+          },
+          {
+            title: 'The Process',
+            date: '2024',
+            body: 'Structural dieline development and 3D prototyping were central to the process — working out how the box would open, how the chocolates would sit, and how the whole thing would feel in someone\'s hands before a single physical unit was produced.',
+            img: 'website_assets/Selected%20work/Johnnie%20Walker/Artboard%2B1%404x.webp',
+            gallery: [
+              'website_assets/Selected%20work/Johnnie%20Walker/johhnie_walker_friandries_chocolate_box_render.webp',
+              'website_assets/Selected%20work/Johnnie%20Walker/JWxFriandries_edit.webp'
+            ]
+          }
+        ]
+      },
+      'personal-graphic': {
+        title: 'Personal Work — Graphic',
+        subtitle: 'Self-Initiated Poster & Print',
+        category: 'Graphic Design · Personal',
+        client: 'Personal',
+        year: '2021–2024',
+        role: 'Art Direction & Design',
+        collab: null,
+        heroImg: 'website_assets/Selected%20work/Personal%20graphic%20work/ISSEY-87.webp',
+        tools: ['Photoshop', 'Illustrator'],
+        overview: 'A collection of self-initiated graphic work — posters made outside of client briefs, exploring typography, colour, and image-making on personal terms.',
+        sections: [
+          {
+            title: 'Issey Miyake \'87',
+            date: 'February 2023',
+            body: 'A response to the iconic 1987 Issey Miyake collection. The poster treats the garment as a graphic object — flattened, distorted, and re-examined through experimental typography and colour.\n\nHigh-contrast image manipulation gives the composition a woodcut-like quality, compressing what was physical and three-dimensional into something purely optical.\n\nThe two photographs below are the source images — archival fashion photographs from the original 1987 collection that served as the raw visual material for the poster.',
+            img: 'website_assets/Selected%20work/Personal%20graphic%20work/ISSEY-87.webp',
+            gallery: [
+              'website_assets/Selected%20work/Personal%20graphic%20work/81922_f748892d3dbbe61b_b.webp',
+              'website_assets/Selected%20work/Personal%20graphic%20work/ed07fe3f31a99899c769c54b31ce68e8.webp'
+            ],
+            galleryWidth: '100%'
+          },
+          {
+            title: 'Dior SS — Men \'24',
+            date: 'March 2024',
+            body: 'Three poster variations built around the Dior Spring/Summer Men\'s 2024 collection. Each piece works as a standalone image and as part of a set — exploring the tension between luxury restraint and graphic maximalism.\n\nThe series uses the collection\'s garments as raw material: colour-blocked, reframed, and stripped of context to become compositional elements in their own right.',
+            gallery: [
+              'website_assets/Selected%20work/Personal%20graphic%20work/dior-ss-m-24Artboard%201.webp',
+              'website_assets/Selected%20work/Personal%20graphic%20work/dior-ss-m-24Artboard%201%20copy%202.webp',
+              'website_assets/Selected%20work/Personal%20graphic%20work/dior-ss-m-24Artboard%201%20copy%203.webp'
+            ]
+          },
+          {
+            title: 'Fantasy Soul',
+            date: 'August 2021',
+            body: 'A festive poster built around a dream soul music lineup. Vintage concert poster techniques were studied and reconstructed — embracing uneven registration, rough halftones, and layered colour as part of the aesthetic rather than something to correct.\n\nThe result feels found rather than made.',
+            img: 'website_assets/Selected%20work/Personal%20graphic%20work/fantasy-soul-v2.webp'
+          }
+        ]
+      },
+      'posters': {
+        title: 'Print Work',
+        subtitle: 'Tommy Hilfiger · James Dean · CitizenM',
+        category: 'Poster Design · Print',
+        client: 'Various',
+        year: '2022–2023',
+        role: 'Graphic Design',
+        collab: 'Various',
+        heroImg: 'website_assets/Selected%20work/Posters/DotInk_James_Dean_Poster_5512x7874px.webp',
+        tools: ['Blender', 'Photoshop', 'Illustrator', 'InDesign'],
+        overview: 'A collection of poster work across clients and contexts — from retail campaigns and gig print to a film poster and event posters dotting the streets of New York.',
+        sections: [
+          {
+            title: 'Tommy Hilfiger',
+            date: '2022–2023',
+            collab: 'Colourcake',
+            body: 'Over time, I\'ve had the privilege of working on several projects for Tommy Hilfiger. Here are two of the highlights.\n\nThe Christmas campaign poster was built around a 3D-rendered TH ornament — made in Blender, then placed into a layered InDesign layout. The ornament carries the brand monogram in gold; a tartan surface grounds it in Tommy\'s heritage. Ran across in-store POS and print for the French market.\n\nThe ADE poster was for Appelsap\'s Amsterdam Dance Event showcase, sponsored by Tommy Jeans. Built to work hard on the street — duotone treatment, maximum contrast, all essential info readable at a glance.',
+            img: 'website_assets/Selected%20work/Posters/Tommy/th-christmas-ornaments.webp',
+            gallery: [
+              'website_assets/Selected%20work/Posters/Tommy/kevin-nana-fofie-TH-appelsap-ADE-poster-v3.webp',
+              'website_assets/Selected%20work/Posters/Tommy/51a36652-177c-4a0e-a7ff-0abf5fcfdd92.webp'
+            ]
+          },
+          {
+            title: 'James Dean',
+            date: '2023',
+            collab: null,
+            body: 'A film poster for the short film James Dean, directed by Gerson Oratmangoen for Dotink Cinema — a story about a young actor\'s pursuit of fame and the harsh realities he faces along the way. As he strives to make a name for himself, he falls victim to manipulation by industry power players.\n\nThe minimalist design reflects the film\'s emotional depth, using stark contrasts to convey the tension, vulnerability, and struggle at the heart of the story. Black and white only — no room for anything else.',
+            img: 'website_assets/Selected%20work/Posters/DotInk_James_Dean_Poster_5512x7874px.webp',
+            gallery: [
+              'website_assets/Selected%20work/Posters/james-dean-source-image-01.webp',
+              'website_assets/Selected%20work/Posters/james-dean-source-image-02.webp'
+            ],
+            galleryWidth: '100%',
+            installVideo: 'website_assets/Selected%20work/Posters/IMG_9563.MOV'
+          },
+          {
+            title: 'CitizenM — NYC',
+            date: 'April 2023',
+            collab: 'Colourcake',
+            body: 'When CitizenM NYC hotel decided to host a rooftop party, the challenge was to make it known far and wide. What better way to achieve this than by dotting the city with posters?\n\nThe concept was straightforward yet visually striking. These posters, when stacked together in layers, formed an attention-grabbing visual that couldn\'t be missed — cocktails in pink and black on white, the same image at different scales, repeating across New York City walls.',
+            gallery: ['website_assets/Selected%20work/Posters/cM-posters-on-wall.webp']
+          }
+        ]
+      }
+    };
+
+    // ── Image Lightbox ──
+    function openLightbox(src) {
+      const lb = document.getElementById('img-lightbox');
+      document.getElementById('img-lightbox-img').src = src;
+      lb.classList.add('open');
+      history.pushState({ lightbox: true }, '', '');
+    }
+    function closeLightbox() {
+      const lb = document.getElementById('img-lightbox');
+      if (!lb.classList.contains('open')) return;
+      lb.classList.remove('open');
+      document.getElementById('img-lightbox-img').src = '';
+      if (history.state && history.state.lightbox) history.back();
+    }
+    document.getElementById('img-lightbox-backdrop').addEventListener('click', closeLightbox);
+    document.getElementById('img-lightbox-close').addEventListener('click', closeLightbox);
+    // Delegate clicks on case study images
+    document.getElementById('cs-content').addEventListener('click', e => {
+      const img = e.target.closest('.cs-section-img, .cs-gallery-img');
+      if (img) openLightbox(img.src);
+    });
+
+    // ── Browser back button support ──
+    window.addEventListener('popstate', (event) => {
+      const lb = document.getElementById('img-lightbox');
+      if (lb.classList.contains('open')) {
+        lb.classList.remove('open');
+        document.getElementById('img-lightbox-img').src = '';
+        return;
+      }
+      // If the new state still has a caseStudy, we went back from lightbox
+      // to the case study — don't close the overlay
+      if (event.state && event.state.caseStudy) return;
+      const overlay = document.getElementById('cs-overlay');
+      if (overlay.classList.contains('open')) {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // ── Case Study Open / Close ──
+    function openCase(id) {
+      const data = cases[id];
+      if (!data) return;
+
+      const collabHtml = data.collab
+        ? `<p class="cs-collab">In collaboration with <span>${data.collab}</span></p>`
+        : '';
+
+      const sectionsHtml = data.sections.map((s, i) => {
+        const num = String(i + 1).padStart(2, '0');
+        const dateSpan = s.date ? `<span style="color:var(--text-tertiary); margin-left:12px; font-size:9px; letter-spacing:0.16em;">${s.date}</span>` : '';
+        const sectionCollab = 'collab' in s ? s.collab : data.collab;
+        const agencyLabel = sectionCollab || 'Independent';
+        const agencyHtml = `<p class="cs-section-agency">Agency — <span>${agencyLabel}</span></p>`;
+        const bodyHtml = s.body.split('\n\n').map(p => `<p>${p}</p>`).join('');
+        const imgHtml = s.img
+          ? `<img class="cs-section-img" src="${s.img}" alt="${s.title}" loading="lazy" />`
+          : '';
+        const galleryHtml = s.gallery && s.gallery.length
+          ? `<div class="cs-gallery cs-gallery-${s.gallery.length}"${s.galleryWidth ? ` style="width:${s.galleryWidth};left:auto;transform:none;"` : ''}>${s.gallery.map(url => `<img class="cs-gallery-img" src="${url}" alt="" loading="lazy"${s.galleryAspect ? ` style="aspect-ratio:${s.galleryAspect};object-fit:cover;object-position:center top;"` : ''} />`).join('')}</div>`
+          : '';
+        const videoHtml = s.video
+          ? `<video class="cs-section-video" src="${s.video}" autoplay loop muted playsinline controls></video>`
+          : '';
+        const btsHtml = s.btsVideo
+          ? `<div class="cs-bts-wrap"><span class="cs-bts-label">Process — Breakdown</span><video class="cs-section-video" src="${s.btsVideo}" autoplay loop muted playsinline controls></video></div>`
+          : '';
+        const installVideoHtml = s.installVideo
+          ? `<div class="cs-bts-wrap"><span class="cs-bts-label">In Context — Eye Film Museum, Amsterdam</span><video class="cs-install-video" src="${s.installVideo}" autoplay loop muted playsinline controls></video></div>`
+          : '';
+        return `
+          <div class="cs-section">
+            <span class="cs-section-num">${num}${dateSpan}</span>
+            <h3 class="cs-section-title">${s.title}</h3>
+            ${agencyHtml}
+            <div class="cs-section-body">${bodyHtml}</div>
+            ${videoHtml}
+            ${btsHtml}
+            ${imgHtml}
+            ${galleryHtml}
+            ${installVideoHtml}
+          </div>`;
+      }).join('');
+
+      const toolsHtml = data.tools.map(t => `<span class="cs-tool-tag">${t}</span>`).join('');
+
+      document.getElementById('cs-content').innerHTML = `
+        <div class="cs-hero">
+          ${data.heroVideo
+            ? `<video class="cs-hero-img" src="${data.heroVideo}" autoplay loop muted playsinline style="object-position:${data.heroPosition || 'center'};"></video>`
+            : `<img class="cs-hero-img" src="${data.heroImg}" alt="${data.title}" style="object-position:${data.heroPosition || 'center'};" />`}
+          <div class="cs-hero-vignette"></div>
+        </div>
+        <div class="cs-article">
+          <div class="cs-title-block">
+            <span class="cs-eyebrow">${data.category}</span>
+            <h2 class="cs-title">${data.title}</h2>
+            <p class="cs-subtitle">${data.subtitle}</p>
+          </div>
+          <div class="cs-meta">
+            <div class="cs-meta-item">
+              <span class="cs-meta-label">Client</span>
+              <span class="cs-meta-value">${data.client}</span>
+            </div>
+            <div class="cs-meta-item" style="padding-left:28px;">
+              <span class="cs-meta-label">Year</span>
+              <span class="cs-meta-value">${data.year}</span>
+            </div>
+            <div class="cs-meta-item" style="padding-left:28px;">
+              <span class="cs-meta-label">Role</span>
+              <span class="cs-meta-value">${data.role}</span>
+            </div>
+            <div class="cs-meta-item" style="padding-left:28px;">
+              <span class="cs-meta-label">Agency</span>
+              <span class="cs-meta-value">${data.collab || 'Independent'}</span>
+            </div>
+          </div>
+          <p class="cs-overview">${data.overview}</p>
+          ${sectionsHtml}
+          ${collabHtml}
+        </div>
+      `;
+
+      const overlay = document.getElementById('cs-overlay');
+      overlay.scrollTop = 0;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('case-open');
+      history.pushState({ caseStudy: id }, '', '#' + id);
+    }
+
+    function closeCase() {
+      const overlay = document.getElementById('cs-overlay');
+      if (!overlay.classList.contains('open')) return;
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      document.body.classList.remove('case-open');
+      if (history.state && history.state.caseStudy) history.back();
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const lb = document.getElementById('img-lightbox');
+        if (lb.classList.contains('open')) { closeLightbox(); return; }
+        closeCase();
+      }
+    });
+
+    // ── Stats count-up ──
+    (function() {
+      const counters = document.querySelectorAll('.count-up');
+      const countObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const target = parseInt(el.dataset.target, 10);
+          const duration = 1200;
+          const start = performance.now();
+          function step(now) {
+            const p = Math.min((now - start) / duration, 1);
+            const ease = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(ease * target);
+            if (p < 1) requestAnimationFrame(step);
+            else el.textContent = target;
+          }
+          requestAnimationFrame(step);
+          countObs.unobserve(el);
+        });
+      }, { threshold: 0.5 });
+      counters.forEach(el => countObs.observe(el));
+    })();
+
+    // ── Project card 3D tilt ──
+    (function() {
+      document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width  - 0.5;
+          const y = (e.clientY - r.top)  / r.height - 0.5;
+          card.style.transform = `perspective(700px) rotateY(${x * 6}deg) rotateX(${-y * 4}deg) scale(1.012)`;
+        }, { passive: true });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(700px) rotateY(0deg) rotateX(0deg) scale(1)';
+          card.style.transition = 'transform 0.5s cubic-bezier(0.22,1,0.36,1)';
+        });
+        card.addEventListener('mouseenter', () => {
+          card.style.transition = 'transform 0.1s ease';
+        });
+      });
+    })();
+
+
+  </script>
+</body>
+</html>
