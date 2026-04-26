@@ -2070,9 +2070,7 @@
       const data = cases[id];
       if (!data) return;
 
-      const collabHtml = data.collab
-        ? `<p class="cs-collab">In collaboration with <span>${data.collab}</span></p>`
-        : '';
+      const collabHtml = '';
 
       const sectionsHtml = data.sections.map((s, i) => {
         const num = String(i + 1).padStart(2, '0');
