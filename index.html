@@ -573,6 +573,7 @@
       -webkit-tap-highlight-color: transparent;
       line-height: 0;
       font-size: 0;
+      transform: translateZ(0);
     }
     .project-card:focus, .project-card:focus-visible { outline: none; }
     .project-card.col-8 { grid-column: span 8; }
@@ -940,19 +941,18 @@
       min-height: 380px;
       overflow: hidden;
       background: var(--bg);
-      padding-bottom: 3px;
     }
     .cs-hero-img {
       width: 100%; height: 100%;
       object-fit: cover;
       display: block;
+      filter: blur(6px);
+      transform: scale(1.05);
     }
     .cs-hero-vignette {
       position: absolute;
       inset: 0;
       background: linear-gradient(to bottom, transparent 40%, rgba(7,7,9,0.7) 80%, var(--bg) 100%);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
     }
 
     /* ── Image Lightbox ── */
@@ -1274,7 +1274,7 @@
       nav { padding: 20px 24px; }
       .nav-links { display: none; }
       .hero { padding: 0 24px 64px; }
-      .hero-title { font-size: clamp(48px, 10vw, 80px); }
+      .hero-title { font-size: clamp(36px, 9vw, 80px); }
       .hero-bottom { flex-direction: column; align-items: flex-start; }
       .section { padding: 64px 24px; }
 
@@ -1309,13 +1309,16 @@
       .stats-row { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 24px; text-align: center; }
       .cs-hero { height: 32vh; min-height: 200px; }
+      .cs-hero-img { filter: blur(3px); }
       .cs-article { padding: 0 24px 80px; }
       .cs-meta { grid-template-columns: 1fr 1fr; }
+      .cs-meta-item { padding: 14px 0; }
       .cs-meta-item:nth-child(2) { border-bottom: 1px solid var(--border); }
       .cs-meta-item:first-child { border-bottom: 1px solid var(--border); }
       .cs-meta-item:nth-child(even) { border-right: none; }
       .cs-meta-item:nth-child(3) { padding-left: 0; }
       .cs-title-block { padding: 36px 0 28px; }
+      .work-grid { gap: 3px; }
       .cs-gallery { grid-template-columns: 1fr; }
 
       /* Logo ticker: tighter padding, bigger logos, faster scroll */
