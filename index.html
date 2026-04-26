@@ -1722,7 +1722,7 @@
     const BASE = 'https://images.squarespace-cdn.com/content/v1/6516ebba36e6816404da7be0/';
     const ASSETS_BASE = location.hostname === 'localhost'
       ? 'website_assets/'
-      : '';
+      : 'https://pub-545adea3391841c896c875b02d24aa3a.r2.dev/website_assets/';
     const asset = url => url && !url.startsWith('http') ? ASSETS_BASE + url : url;
     const cases = {
       'hm': {
