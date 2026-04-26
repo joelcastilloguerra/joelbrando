@@ -588,9 +588,10 @@
     .project-overlay { display: none; }
     .project-card::after {
       content: '';
+      display: block;
       position: absolute;
       top: 0; right: 0; bottom: 0; left: 0;
-      background: linear-gradient(to top, rgba(7,7,9,1) 0%, rgba(7,7,9,0.7) 20%, rgba(7,7,9,0) 58%);
+      background: linear-gradient(to top, rgba(7,7,9,1) 0%, rgba(7,7,9,0.7) 20%, rgba(7,7,9,0) 55%, rgba(7,7,9,0.25) 85%, rgba(7,7,9,0.45) 100%);
       transition: opacity 0.4s ease;
       pointer-events: none;
       z-index: 1;
@@ -955,6 +956,7 @@
     .cs-hero-vignette { display: none; }
     .cs-hero::after {
       content: '';
+      display: block;
       position: absolute;
       top: 0; right: 0; bottom: 0; left: 0;
       background: linear-gradient(to bottom, transparent 40%, rgba(7,7,9,0.7) 80%, var(--bg) 100%);
@@ -1299,7 +1301,7 @@
       .project-info { transform: translateY(0); padding: 20px; }
       .project-sub { opacity: 1; transform: translateY(0); }
       .project-card::after {
-        background: linear-gradient(to top, rgba(7,7,9,1) 0%, rgba(7,7,9,1) 4%, rgba(7,7,9,0.55) 50%, transparent 100%);
+        background: linear-gradient(to top, rgba(7,7,9,1) 0%, rgba(7,7,9,1) 4%, rgba(7,7,9,0.55) 50%, rgba(7,7,9,0.25) 85%, rgba(7,7,9,0.45) 100%);
       }
       .project-category { color: rgba(200,196,188,0.7); }
 
@@ -2187,7 +2189,8 @@
       overlay.classList.remove('open');
       document.body.style.overflow = '';
       document.body.classList.remove('case-open');
-      if (history.state && history.state.caseStudy) history.back();
+      document.documentElement.classList.remove('case-open');
+      history.replaceState(null, '', location.pathname);
     }
 
     // ── Resolve data-src elements using ASSETS_BASE ──
@@ -2198,7 +2201,11 @@
     // ── Open case study from URL hash on load ──
     if (location.hash) {
       const id = location.hash.slice(1);
-      if (cases[id]) openCase(id);
+      if (cases[id]) {
+        openCase(id);
+        // Replace the pushState openCase just added so closing doesn't re-open
+        history.replaceState({ caseStudy: id }, '', '#' + id);
+      }
     }
 
     document.addEventListener('keydown', e => {
