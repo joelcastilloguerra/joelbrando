@@ -67,7 +67,7 @@
     }
 
     /* ── Film Letterbox ── */
-    html::before, html::after {
+    html:not(.case-open)::before, html:not(.case-open)::after {
       content: '';
       position: fixed;
       left: 0; right: 0;
@@ -76,8 +76,8 @@
       z-index: 9998;
       pointer-events: none;
     }
-    html::before { top: 0; }
-    html::after  { bottom: 0; }
+    html:not(.case-open)::before { top: 0; }
+    html:not(.case-open)::after  { bottom: 0; }
 
     /* ── Lens Vignette ── */
     body::after {
@@ -573,7 +573,6 @@
       -webkit-tap-highlight-color: transparent;
       line-height: 0;
       font-size: 0;
-      transform: translateZ(0);
     }
     .project-card:focus, .project-card:focus-visible { outline: none; }
     .project-card.col-8 { grid-column: span 8; }
@@ -586,13 +585,17 @@
       transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .project-card:hover .project-img { transform: scale(1.03); }
-    .project-overlay {
+    .project-overlay { display: none; }
+    .project-card::after {
+      content: '';
       position: absolute;
-      inset: -1px;
+      top: 0; right: 0; bottom: 0; left: 0;
       background: linear-gradient(to top, rgba(7,7,9,1) 0%, rgba(7,7,9,0.7) 20%, rgba(7,7,9,0) 58%);
       transition: opacity 0.4s ease;
+      pointer-events: none;
+      z-index: 1;
     }
-    .project-card:hover .project-overlay { opacity: 0.85; }
+    .project-card:hover::after { opacity: 0.85; }
     .project-info {
       position: absolute;
       bottom: 0; left: 0; right: 0;
@@ -601,6 +604,7 @@
       transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       font-size: 14px;
       line-height: 1.7;
+      z-index: 2;
     }
     .project-card:hover .project-info { transform: translateY(0); }
     .project-category {
@@ -947,12 +951,14 @@
       object-fit: cover;
       display: block;
       filter: blur(6px);
-      transform: scale(1.05);
     }
-    .cs-hero-vignette {
+    .cs-hero-vignette { display: none; }
+    .cs-hero::after {
+      content: '';
       position: absolute;
-      inset: -1px;
+      top: 0; right: 0; bottom: 0; left: 0;
       background: linear-gradient(to bottom, transparent 40%, rgba(7,7,9,0.7) 80%, var(--bg) 100%);
+      pointer-events: none;
     }
 
     /* ── Image Lightbox ── */
@@ -1292,7 +1298,7 @@
       .project-card.col-8 { grid-column: span 1; }
       .project-info { transform: translateY(0); padding: 20px; }
       .project-sub { opacity: 1; transform: translateY(0); }
-      .project-overlay {
+      .project-card::after {
         background: linear-gradient(to top, rgba(7,7,9,1) 0%, rgba(7,7,9,1) 4%, rgba(7,7,9,0.55) 50%, transparent 100%);
       }
       .project-category { color: rgba(200,196,188,0.7); }
@@ -2079,6 +2085,7 @@
         overlay.classList.remove('open');
         document.body.style.overflow = '';
         document.body.classList.remove('case-open');
+        document.documentElement.classList.remove('case-open');
       }
     });
 
@@ -2170,6 +2177,7 @@
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.body.classList.add('case-open');
+      document.documentElement.classList.add('case-open');
       history.pushState({ caseStudy: id }, '', '#' + id);
     }
 
