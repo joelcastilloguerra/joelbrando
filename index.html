@@ -2076,8 +2076,9 @@
         const num = String(i + 1).padStart(2, '0');
         const dateSpan = s.date ? `<span style="color:var(--text-tertiary); margin-left:12px; font-size:9px; letter-spacing:0.16em;">${s.date}</span>` : '';
         const sectionCollab = 'collab' in s ? s.collab : data.collab;
-        const agencyLabel = sectionCollab || 'Independent';
-        const agencyHtml = `<p class="cs-section-agency">Agency — <span>${agencyLabel}</span></p>`;
+        const agencyHtml = sectionCollab
+          ? `<p class="cs-section-agency">Agency — <span>${sectionCollab}</span></p>`
+          : '';
         const bodyHtml = s.body.split('\n\n').map(p => `<p>${p}</p>`).join('');
         const imgHtml = s.img
           ? `<img class="cs-section-img" src="${asset(s.img)}" alt="${s.title}" loading="lazy" />`
