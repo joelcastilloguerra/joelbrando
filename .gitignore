@@ -3,6 +3,10 @@ website_assets/
 temporary screenshots/
 inspiration/
 CLAUDE.md
+package.json
+package-lock.json
+serve.mjs
+screenshot.mjs
 *.jpg
 *.mov
 *.MOV
