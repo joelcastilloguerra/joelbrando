@@ -4,11 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Joel Brando — 3D & Graphic Design</title>
+  <meta name="description" content="Joel Brando — 3D artist and graphic designer based in Amsterdam, crafting visual identities, digital campaigns, and motion work for leading brands." />
   <link rel="icon" type="image/png" href="brand_assets/favicon.png" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preload" as="image" href="brand_assets/Joel-Brando_logo_3D_grain.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" /></noscript>
   <style>
     :root {
       --bg: #070709;
@@ -18,7 +20,7 @@
       --border-hover: rgba(255,255,255,0.14);
       --text-primary: #EDE9E3;
       --text-secondary: #7A7872;
-      --text-tertiary: #4A4844;
+      --text-tertiary: #7E7B78;
       --chrome: #C8C4BC;
       --chrome-bright: #E8E4DC;
     }
@@ -562,7 +564,7 @@
     .work-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 3px;
+      gap: 0;
     }
     .project-card {
       position: relative;
@@ -581,8 +583,9 @@
       width: 100%;
       aspect-ratio: 4/3;
       object-fit: cover;
-      display: block;
       transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
     }
     .project-card:hover .project-img { transform: scale(1.03); }
     .project-overlay { display: none; }
@@ -591,12 +594,12 @@
       display: block;
       position: absolute;
       top: 0; right: 0; bottom: 0; left: 0;
-      background: linear-gradient(to top, rgba(7,7,9,1) 0%, rgba(7,7,9,0.7) 20%, rgba(7,7,9,0) 55%, rgba(7,7,9,0.25) 85%, rgba(7,7,9,0.45) 100%);
+      background: linear-gradient(to bottom, rgba(7,7,9,0.75) 0%, rgba(7,7,9,0) 30%, rgba(7,7,9,0) 55%, rgba(7,7,9,0.85) 100%);
       transition: opacity 0.4s ease;
       pointer-events: none;
       z-index: 1;
     }
-    .project-card:hover::after { opacity: 0.85; }
+    .project-card:hover::after { opacity: 0.9; }
     .project-info {
       position: absolute;
       bottom: 0; left: 0; right: 0;
@@ -952,6 +955,7 @@
       object-fit: cover;
       display: block;
       filter: blur(6px);
+      transform: scale(1.04);
     }
     .cs-hero-vignette { display: none; }
     .cs-hero::after {
@@ -959,7 +963,7 @@
       display: block;
       position: absolute;
       top: 0; right: 0; bottom: 0; left: 0;
-      background: linear-gradient(to bottom, transparent 40%, rgba(7,7,9,0.7) 80%, var(--bg) 100%);
+      background: linear-gradient(to bottom, rgba(7,7,9,0.5) 0%, transparent 25%, rgba(7,7,9,0.7) 80%, var(--bg) 100%);
       pointer-events: none;
     }
 
@@ -1294,14 +1298,14 @@
       .scroll-indicator { display: none; }
 
       /* Work grid: single column, full-bleed, spaced */
-      .work-grid { grid-template-columns: 1fr; gap: 8px; margin: 0 !important; }
+      .work-grid { grid-template-columns: 1fr; gap: 0; margin: 0 !important; }
       .project-card.col-7, .project-card.col-5,
       .project-card.col-4, .project-card.col-6,
       .project-card.col-8 { grid-column: span 1; }
       .project-info { transform: translateY(0); padding: 20px; }
       .project-sub { opacity: 1; transform: translateY(0); }
       .project-card::after {
-        background: linear-gradient(to top, rgba(7,7,9,1) 0%, rgba(7,7,9,1) 4%, rgba(7,7,9,0.55) 50%, rgba(7,7,9,0.25) 85%, rgba(7,7,9,0.45) 100%);
+        background: linear-gradient(to bottom, rgba(7,7,9,0.9) 0%, rgba(7,7,9,0) 28%, rgba(7,7,9,0) 45%, rgba(7,7,9,0.95) 100%);
       }
       .project-category { color: rgba(200,196,188,0.7); }
 
@@ -1328,7 +1332,6 @@
       .cs-meta-item:nth-child(even) { border-right: none; }
       .cs-meta-item:nth-child(3) { padding-left: 0; }
       .cs-title-block { padding: 36px 0 28px; }
-      .work-grid { gap: 3px; }
       .cs-gallery { grid-template-columns: 1fr; }
 
       /* Logo ticker: tighter padding, bigger logos, faster scroll */
@@ -1353,7 +1356,7 @@
   <!-- ── NAVIGATION ── -->
   <nav id="nav">
     <a href="#" class="nav-logo">
-      <img src="brand_assets/Joel-Brando_logo_3D_grain.webp" alt="Joel Brando" />
+      <img src="brand_assets/Joel-Brando_logo_3D_grain.webp" alt="Joel Brando" width="230" height="54" fetchpriority="high" />
     </a>
     <ul class="nav-links">
       <li><a href="#work">Work</a></li>
@@ -1382,11 +1385,11 @@
   <section class="hero" id="home">
     <!-- Desktop hero video (landscape) -->
     <div class="hero-vimeo-desktop">
-      <iframe src="https://player.vimeo.com/video/1186165525?background=1&autoplay=1&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe src="https://player.vimeo.com/video/1186165525?background=1&autoplay=1&loop=1&muted=1" title="Joel Brando showreel" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
     <!-- Mobile hero video (portrait) -->
     <div class="hero-vimeo-mobile">
-      <iframe src="https://player.vimeo.com/video/1186165078?background=1&autoplay=1&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe src="https://player.vimeo.com/video/1186165078?background=1&autoplay=1&loop=1&muted=1" title="Joel Brando showreel" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
     <div class="hero-bg"></div>
 
@@ -1435,29 +1438,29 @@
   <div class="logo-ticker-wrap">
     <div class="logo-ticker-track">
       <!-- Set 1 -->
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/scotch-soda.png" alt="Scotch &amp; Soda"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/hm.png" alt="H&amp;M"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/puma.png" alt="Puma"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/red-bull.png" alt="Red Bull"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/tommy-hilfiger.png" alt="Tommy Hilfiger"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/polaroid.png" alt="Polaroid"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/patagonia.png" alt="Patagonia"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/don-julio.png" alt="Don Julio"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/mizuno.png" alt="Mizuno"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/five-guys.png" alt="Five Guys"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/johnnie-walker.png" alt="Johnnie Walker"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/scotch-soda.png" alt="Scotch &amp; Soda" width="300" height="148"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/hm.png" alt="H&amp;M" width="300" height="198"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/puma.png" alt="Puma" width="300" height="161"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/red-bull.png" alt="Red Bull" width="300" height="141"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/tommy-hilfiger.png" alt="Tommy Hilfiger" width="300" height="197"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/polaroid.png" alt="Polaroid" width="300" height="80"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/patagonia.png" alt="Patagonia" width="300" height="59"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/don-julio.png" alt="Don Julio" width="300" height="203"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/mizuno.png" alt="Mizuno" width="300" height="147"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/five-guys.png" alt="Five Guys" width="300" height="67"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/johnnie-walker.png" alt="Johnnie Walker" width="300" height="74"></div>
       <!-- Set 2 — duplicate for seamless loop -->
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/scotch-soda.png" alt="Scotch &amp; Soda"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/hm.png" alt="H&amp;M"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/puma.png" alt="Puma"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/red-bull.png" alt="Red Bull"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/tommy-hilfiger.png" alt="Tommy Hilfiger"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/polaroid.png" alt="Polaroid"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/patagonia.png" alt="Patagonia"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/don-julio.png" alt="Don Julio"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/mizuno.png" alt="Mizuno"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/five-guys.png" alt="Five Guys"></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/johnnie-walker.png" alt="Johnnie Walker"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/scotch-soda.png" alt="Scotch &amp; Soda" width="300" height="148"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/hm.png" alt="H&amp;M" width="300" height="198"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/puma.png" alt="Puma" width="300" height="161"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/red-bull.png" alt="Red Bull" width="300" height="141"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/tommy-hilfiger.png" alt="Tommy Hilfiger" width="300" height="197"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/polaroid.png" alt="Polaroid" width="300" height="80"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/patagonia.png" alt="Patagonia" width="300" height="59"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/don-julio.png" alt="Don Julio" width="300" height="203"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/mizuno.png" alt="Mizuno" width="300" height="147"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/five-guys.png" alt="Five Guys" width="300" height="67"></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/johnnie-walker.png" alt="Johnnie Walker" width="300" height="74"></div>
     </div>
   </div>
 
@@ -1668,7 +1671,7 @@
   <!-- ── FOOTER ── -->
   <footer>
     <a href="#">
-      <img src="brand_assets/Joel-Brando_logo_3D_grain.webp" alt="Joel Brando" />
+      <img src="brand_assets/Joel-Brando_logo_3D_grain.webp" alt="Joel Brando" width="85" height="20" loading="lazy" />
     </a>
     <ul class="footer-links">
       <li><a href="#work">Work</a></li>
