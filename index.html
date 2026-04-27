@@ -5,12 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Joel Brando — 3D & Graphic Design</title>
   <meta name="description" content="Joel Brando — 3D artist and graphic designer based in Amsterdam, crafting visual identities, digital campaigns, and motion work for leading brands." />
-  <link rel="icon" type="image/png" href="brand_assets/favicon.png" />
+  <link rel="icon" href="data:," />
   <link rel="preload" as="image" href="brand_assets/Joel-Brando_logo_3D_grain.webp" fetchpriority="high" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" /></noscript>
   <style>
 :root {
 --bg: #070709;
@@ -1724,6 +1720,8 @@ footer { flex-direction: column; gap: 24px; text-align: center; }
       }
       const heroEtheral = document.getElementById('hero-etheral');
       if (heroEtheral) heroEtheral.style.display = '';
+      // Defer 93KB favicon well past LCP to avoid bandwidth competition
+      setTimeout(() => { document.querySelector('link[rel="icon"]').href = 'brand_assets/favicon.png'; }, 5000);
     });
 
     // ── Nav scroll effect ──
