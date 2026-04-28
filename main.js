@@ -1,4 +1,4 @@
-// ── Vimeo deferred load (gesture or 3s after load — never fires on Lighthouse scroll) ──
+// ── Vimeo deferred load ──
 let _vimeoLoaded = false;
 const loadVimeo = () => {
   if (_vimeoLoaded) return;
@@ -6,6 +6,11 @@ const loadVimeo = () => {
   document.querySelectorAll('iframe[data-src]').forEach(iframe => {
     iframe.src = iframe.dataset.src;
   });
+  setTimeout(() => {
+    document.querySelectorAll('.hero-vimeo-desktop, .hero-vimeo-mobile').forEach(el => {
+      el.classList.add('vimeo-loaded');
+    });
+  }, 900);
 };
 ['pointerdown','touchstart','keydown'].forEach(e =>
   window.addEventListener(e, loadVimeo, { once: true, passive: true })
@@ -41,7 +46,7 @@ const revealObserver = new IntersectionObserver(entries => {
       revealObserver.unobserve(el);
     }
   });
-}, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+}, { threshold: 0.05, rootMargin: '0px 0px -16px 0px' });
 
 document.querySelectorAll('.reveal-item, .reveal-left, .reveal-right, .reveal-scale').forEach(el => revealObserver.observe(el));
 

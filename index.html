@@ -115,7 +115,6 @@ to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
 .scroll-indicator { animation: film-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both; }
 
 
-.project-card.reveal-item { filter: none; }
 
 
 .service-card::before {
@@ -459,32 +458,28 @@ background: var(--border);
 
 .reveal-item {
 opacity: 0;
-transform: translateY(20px);
-filter: blur(3px);
-transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+transform: translateY(22px);
+transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.reveal-item.revealed { opacity: 1; transform: translateY(0); filter: blur(0); }
+.reveal-item.revealed { opacity: 1; transform: translateY(0); }
 .reveal-left {
 opacity: 0;
-transform: translateX(-24px);
-filter: blur(2px);
-transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+transform: translateX(-22px);
+transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.reveal-left.revealed { opacity: 1; transform: translateX(0); filter: blur(0); }
+.reveal-left.revealed { opacity: 1; transform: translateX(0); }
 .reveal-right {
 opacity: 0;
-transform: translateX(24px);
-filter: blur(2px);
-transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+transform: translateX(22px);
+transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.reveal-right.revealed { opacity: 1; transform: translateX(0); filter: blur(0); }
+.reveal-right.revealed { opacity: 1; transform: translateX(0); }
 .reveal-scale {
 opacity: 0;
-transform: scale(0.94);
-filter: blur(3px);
-transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+transform: scale(0.97);
+transition: opacity 1.0s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.reveal-scale.revealed { opacity: 1; transform: scale(1); filter: blur(0); }
+.reveal-scale.revealed { opacity: 1; transform: scale(1); }
 
 
 
@@ -789,8 +784,13 @@ position: absolute;
 inset: 0;
 z-index: 0;
 overflow: hidden;
-opacity: 0.55;
+opacity: 0;
 display: none;
+transition: opacity 2.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-vimeo-desktop.vimeo-loaded,
+.hero-vimeo-mobile.vimeo-loaded {
+opacity: 0.55;
 }
 
 .hero-vimeo-desktop {
@@ -1720,7 +1720,7 @@ footer { flex-direction: column; gap: 24px; text-align: center; }
   </div>
 
   <script>
-    // ── Vimeo deferred load (gesture or 3s after load — never fires on Lighthouse scroll) ──
+    // ── Vimeo deferred load ──
     let _vimeoLoaded = false;
     const loadVimeo = () => {
       if (_vimeoLoaded) return;
@@ -1728,6 +1728,12 @@ footer { flex-direction: column; gap: 24px; text-align: center; }
       document.querySelectorAll('iframe[data-src]').forEach(iframe => {
         iframe.src = iframe.dataset.src;
       });
+      // Fade in after Vimeo has had a moment to buffer
+      setTimeout(() => {
+        document.querySelectorAll('.hero-vimeo-desktop, .hero-vimeo-mobile').forEach(el => {
+          el.classList.add('vimeo-loaded');
+        });
+      }, 900);
     };
     ['pointerdown','touchstart','keydown'].forEach(e =>
       window.addEventListener(e, loadVimeo, { once: true, passive: true })
@@ -1766,7 +1772,7 @@ footer { flex-direction: column; gap: 24px; text-align: center; }
           revealObserver.unobserve(el);
         }
       });
-    }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px -16px 0px' });
 
     document.querySelectorAll('.reveal-item, .reveal-left, .reveal-right, .reveal-scale').forEach(el => revealObserver.observe(el));
 
