@@ -58,7 +58,7 @@ width: 120%;
 height: 120%;
 pointer-events: none;
 z-index: 9999;
-opacity: 0.65;
+opacity: 0.88;
 mix-blend-mode: overlay;
 background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 background-repeat: repeat;
@@ -154,7 +154,7 @@ font-optical-sizing: auto;
 
 .label {
 font-family: 'DM Sans', sans-serif;
-font-size: 10px;
+font-size: 11px;
 font-weight: 500;
 letter-spacing: 0.18em;
 text-transform: uppercase;
@@ -197,7 +197,7 @@ gap: 40px;
 list-style: none;
 }
 .nav-links a {
-font-size: 12px;
+font-size: 13px;
 font-weight: 400;
 letter-spacing: 0.1em;
 text-transform: uppercase;
@@ -217,7 +217,7 @@ transition: width 0.3s ease;
 .nav-links a:hover { color: var(--text-primary); }
 .nav-links a:hover::after { width: 100%; }
 .nav-cta {
-font-size: 11px;
+font-size: 12px;
 letter-spacing: 0.1em;
 text-transform: uppercase;
 color: var(--text-primary) !important;
@@ -298,7 +298,7 @@ gap: 40px;
 }
 .hero-desc {
 max-width: 380px;
-font-size: 15px;
+font-size: 16px;
 color: var(--text-secondary);
 line-height: 1.8;
 }
@@ -313,7 +313,7 @@ flex-shrink: 0;
 display: inline-flex;
 align-items: center;
 gap: 10px;
-font-size: 11px;
+font-size: 12px;
 font-weight: 500;
 letter-spacing: 0.12em;
 text-transform: uppercase;
@@ -330,7 +330,7 @@ transition: background 0.25s ease, transform 0.2s ease;
 display: inline-flex;
 align-items: center;
 gap: 10px;
-font-size: 11px;
+font-size: 12px;
 font-weight: 400;
 letter-spacing: 0.12em;
 text-transform: uppercase;
@@ -458,26 +458,26 @@ background: var(--border);
 
 .reveal-item {
 opacity: 0;
-transform: translateY(22px);
-transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+transform: translateY(36px);
+transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 1.0s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.reveal-item.revealed { opacity: 1; transform: translateY(0); }
+.reveal-item.revealed { opacity: 1; transform: translateY(0); margin-top: -1px; margin-left: 1px; }
 .reveal-left {
 opacity: 0;
-transform: translateX(-22px);
-transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+transform: translateX(-36px);
+transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 1.0s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-left.revealed { opacity: 1; transform: translateX(0); }
 .reveal-right {
 opacity: 0;
-transform: translateX(22px);
-transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+transform: translateX(36px);
+transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 1.0s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-right.revealed { opacity: 1; transform: translateX(0); }
 .reveal-scale {
 opacity: 0;
-transform: scale(0.97);
-transition: opacity 1.0s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+transform: scale(0.95);
+transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 1.0s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-scale.revealed { opacity: 1; transform: scale(1); }
 
@@ -534,7 +534,7 @@ line-height: 1.1;
 font-optical-sizing: auto;
 }
 .service-desc {
-font-size: 14px;
+font-size: 15px;
 color: var(--text-secondary);
 line-height: 1.8;
 max-width: 340px;
@@ -568,15 +568,14 @@ outline: none;
 -webkit-tap-highlight-color: transparent;
 line-height: 0;
 font-size: 0;
-border-radius: 2px;
-box-shadow: 0 8px 32px -4px rgba(0,0,0,0.6);
-transition: box-shadow 0.5s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+border-radius: 0;
+transform: translateZ(0);
+transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
 }
 .project-card:focus, .project-card:focus-visible { outline: none; }
 .project-card.col-8 { grid-column: span 8; }
 .project-card:hover {
-box-shadow: 0 12px 48px -4px rgba(0,0,0,0.5), 0 32px 80px -16px rgba(200,196,188,0.12);
-transform: translateY(-3px);
+transform: translateZ(0) translateY(-3px);
 }
 .project-img {
 display: block;
@@ -595,6 +594,12 @@ inset: 0;
 background: linear-gradient(to bottom, rgba(7,7,9,0) 30%, rgba(7,7,9,0.65) 65%, rgba(7,7,9,0.92) 100%);
 pointer-events: none;
 z-index: 1;
+width: 100%;
+  height: 100%;
+  transform: scale(1.01); /* Oversizes it by 1% to bleed over the edges */
+  transform-origin: center;
+  will-change: transform;
+  transform: translateZ(0) scale(1.01);
 }
 
 .project-info {
@@ -606,7 +611,7 @@ line-height: 1.7;
 z-index: 2;
 }
 .project-category {
-font-size: 9px;
+font-size: 10px;
 letter-spacing: 0.2em;
 text-transform: uppercase;
 color: rgba(200,196,188,0.45);
@@ -614,19 +619,19 @@ margin-bottom: 5px;
 }
 .project-name {
 font-family: 'Fraunces', serif;
-font-size: 20px;
+font-size: 22px;
 font-weight: 400;
 color: var(--text-primary);
 line-height: 1.2;
 }
 .project-sub {
-font-size: 11px;
+font-size: 13px;
 color: var(--text-secondary);
 margin-top: 5px;
 line-height: 1.5;
 }
 .project-cta {
-font-size: 9px;
+font-size: 10px;
 letter-spacing: 0.2em;
 text-transform: uppercase;
 color: var(--chrome);
@@ -644,12 +649,12 @@ transition: opacity 0.3s ease, transform 0.3s ease;
 .about-grid { display: grid; grid-template-columns: 1fr 0.6fr; gap: 80px; align-items: stretch; }
 .about-title { font-family: 'Fraunces', serif; font-size: clamp(44px, 5vw, 80px); font-weight: 400; margin-bottom: 32px; }
 .about-title em { font-style: italic; color: var(--chrome); }
-.about-body { font-size: 15px; color: var(--text-secondary); line-height: 1.85; margin-bottom: 20px; max-width: 520px; }
+.about-body { font-size: 16px; color: var(--text-secondary); line-height: 1.85; margin-bottom: 20px; max-width: 520px; }
 .about-link {
 display: inline-flex;
 align-items: center;
 gap: 8px;
-font-size: 11px;
+font-size: 12px;
 letter-spacing: 0.12em;
 text-transform: uppercase;
 color: var(--text-primary);
@@ -691,7 +696,7 @@ margin-bottom: 8px;
 .contact-inner { max-width: 680px; margin: 0 auto; text-align: center; padding: 120px 48px; }
 .contact-title { font-family: 'Fraunces', serif; font-size: clamp(52px, 6vw, 96px); font-weight: 400; margin-bottom: 24px; }
 .contact-title em { font-style: italic; color: var(--chrome); }
-.contact-sub { font-size: 15px; color: var(--text-secondary); margin-bottom: 56px; line-height: 1.7; }
+.contact-sub { font-size: 16px; color: var(--text-secondary); margin-bottom: 56px; line-height: 1.7; }
 .contact-email {
 display: inline-block;
 font-family: 'Fraunces', serif;
@@ -706,7 +711,7 @@ transition: border-color 0.3s ease, color 0.3s ease;
 }
 .contact-email:hover { border-color: var(--chrome); color: var(--chrome-bright); }
 .contact-details { display: flex; align-items: center; justify-content: center; gap: 32px; margin-top: 48px; flex-wrap: wrap; }
-.contact-item { font-size: 12px; color: var(--text-tertiary); letter-spacing: 0.05em; }
+.contact-item { font-size: 13px; color: var(--text-tertiary); letter-spacing: 0.05em; }
 .contact-sep { width: 1px; height: 12px; background: var(--border-hover); }
 
 
@@ -714,9 +719,9 @@ footer { padding: 40px 48px; display: flex; align-items: center; justify-content
 footer img { height: 20px; width: auto; filter: brightness(0.5); transition: filter 0.3s ease; }
 footer img:hover { filter: brightness(0.75); }
 .footer-links { display: flex; gap: 32px; list-style: none; }
-.footer-links a { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.25s ease; }
+.footer-links a { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-tertiary); text-decoration: none; transition: color 0.25s ease; }
 .footer-links a:hover { color: var(--text-secondary); }
-.footer-copy { font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.08em; }
+.footer-copy { font-size: 11px; color: var(--text-tertiary); letter-spacing: 0.08em; }
 
 
 .social-links { display: flex; gap: 20px; align-items: center; }
@@ -786,7 +791,7 @@ z-index: 0;
 overflow: hidden;
 opacity: 0;
 display: none;
-transition: opacity 2.4s cubic-bezier(0.16, 1, 0.3, 1);
+transition: opacity 10s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .hero-vimeo-desktop.vimeo-loaded,
 .hero-vimeo-mobile.vimeo-loaded {
@@ -962,6 +967,10 @@ position: absolute;
 top: 0; right: 0; bottom: 0; left: 0;
 background: linear-gradient(to bottom, rgba(7,7,9,0.5) 0%, transparent 25%, rgba(7,7,9,0.7) 80%, var(--bg) 100%);
 pointer-events: none;
+width: 100%;
+height: 100%;
+transform: scale(1.01);
+transform-origin: center;
 }
 
 
@@ -1295,16 +1304,26 @@ nav { padding: 20px 24px; }
 .scroll-indicator { display: none; }
 
 
-.work-grid { grid-template-columns: 1fr; gap: 16px; margin: 0 !important; }
+.work-grid { grid-template-columns: 1fr; gap: 12px; margin: 0 !important; }
 .project-card.col-7, .project-card.col-5,
 .project-card.col-4, .project-card.col-6,
 .project-card.col-8 { grid-column: span 1; }
-.project-info { transform: translateY(0); padding: 20px; }
-.project-sub { opacity: 1; transform: translateY(0); }
+.project-card { border-radius: 2px; box-shadow: 0 4px 24px -4px rgba(0,0,0,0.7); transform: none !important; }
+.project-card:hover { box-shadow: 0 4px 24px -4px rgba(0,0,0,0.7); transform: none !important; }
+.project-img { aspect-ratio: 5/4; }
 .project-card::after {
-background: linear-gradient(to bottom, rgba(7,7,9,0.9) 0%, rgba(7,7,9,0) 28%, rgba(7,7,9,0) 45%, rgba(7,7,9,0.95) 100%);
+  background: linear-gradient(to bottom, transparent 20%, rgba(5,5,7,0.55) 55%, rgba(5,5,7,0.97) 100%);
 }
-.project-category { color: rgba(200,196,188,0.7); }
+.project-info {
+  position: absolute;
+  padding: 20px 22px 24px;
+  transform: none !important;
+}
+.project-name { font-size: 21px; }
+.project-category { font-size: 10px; color: rgba(200,196,188,0.6); }
+.project-sub { font-size: 13px; opacity: 1; transform: none; margin-top: 6px; }
+.project-cta { display: none; }
+.contact-sep { display: none; }
 
 
 .work-cat { margin: 10px 24px 6px; }
@@ -1424,7 +1443,7 @@ footer { flex-direction: column; gap: 24px; text-align: center; }
       </h1>
       <div class="hero-bottom">
         <p class="hero-desc">
-          10+ years of experience crafting visually striking work for global brands — from immersive 3D campaigns to sharp graphic identities.
+          Crafting visually striking work at the intersection of 3D design and art direction. I focus on creating immersive digital experiences and sharp graphic identities for global brands.
         </p>
         <div class="hero-actions">
           <a href="#work" class="btn-ghost">
@@ -1500,7 +1519,7 @@ footer { flex-direction: column; gap: 24px; text-align: center; }
   <section class="section" id="work" style="padding-bottom: 16px;">
     <div class="section-header">
       <h2 style="font-size: clamp(36px,4vw,60px);">Selected Work</h2>
-      <span class="label">Portfolio — 2022–2025</span>
+      <span class="label">Portfolio — 2022–<script>document.write(/\d{4}/.exec(Date())[0])</script></span>
     </div>
   </section>
 
@@ -1722,24 +1741,44 @@ footer { flex-direction: column; gap: 24px; text-align: center; }
   <script>
     // ── Vimeo deferred load ──
     let _vimeoLoaded = false;
+    let _vimeoFadedIn = false;
+    const fadeInVimeo = () => {
+      if (_vimeoFadedIn) return;
+      _vimeoFadedIn = true;
+      document.querySelectorAll('.hero-vimeo-desktop, .hero-vimeo-mobile').forEach(el => {
+        el.classList.add('vimeo-loaded');
+      });
+    };
     const loadVimeo = () => {
       if (_vimeoLoaded) return;
       _vimeoLoaded = true;
       document.querySelectorAll('iframe[data-src]').forEach(iframe => {
         iframe.src = iframe.dataset.src;
       });
-      // Fade in after Vimeo has had a moment to buffer
-      setTimeout(() => {
-        document.querySelectorAll('.hero-vimeo-desktop, .hero-vimeo-mobile').forEach(el => {
-          el.classList.add('vimeo-loaded');
-        });
-      }, 900);
+      // Fade in as soon as Vimeo player is ready (fires ~1s after src set)
+      window.addEventListener('message', function onVimeoMsg(e) {
+        if (e.origin !== 'https://player.vimeo.com') return;
+        try {
+          const d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+          if (!d) return;
+          if (d.event === 'ready') {
+            // Player initialised — give it 400ms for first frame then fade in
+            window.removeEventListener('message', onVimeoMsg);
+            setTimeout(fadeInVimeo, 400);
+          } else if (d.event === 'play' || d.event === 'playProgress') {
+            window.removeEventListener('message', onVimeoMsg);
+            fadeInVimeo();
+          }
+        } catch {}
+      });
+      // Fallback: always fade in after 3.5s
+      setTimeout(fadeInVimeo, 3500);
     };
     ['pointerdown','touchstart','keydown'].forEach(e =>
       window.addEventListener(e, loadVimeo, { once: true, passive: true })
     );
 
-    // ── Etheral effects + Vimeo fallback timer ──
+    // ── Etheral effects + Vimeo on page load ──
     window.addEventListener('load', () => {
       const siteEtheral = document.querySelector('.site-etheral');
       if (siteEtheral) {
@@ -1748,7 +1787,6 @@ footer { flex-direction: column; gap: 24px; text-align: center; }
       }
       const heroEtheral = document.getElementById('hero-etheral');
       if (heroEtheral) heroEtheral.style.display = '';
-      // Load Vimeo immediately after page load
       loadVimeo();
       // Defer 93KB favicon well past LCP
       setTimeout(() => { document.querySelector('link[rel="icon"]').href = 'brand_assets/favicon.png'; }, 5000);
@@ -1772,7 +1810,7 @@ footer { flex-direction: column; gap: 24px; text-align: center; }
           revealObserver.unobserve(el);
         }
       });
-    }, { threshold: 0.05, rootMargin: '0px 0px -16px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.reveal-item, .reveal-left, .reveal-right, .reveal-scale').forEach(el => revealObserver.observe(el));
 
@@ -1867,7 +1905,7 @@ footer { flex-direction: column; gap: 24px; text-align: center; }
         sections: [
           {
             title: 'Pepsi — Zero Sugar',
-            date: '2024',
+            date: '2025',
             collab: 'Unit9',
             body: 'A FOOH billboard for Pepsi Zero Sugar, placed in the streets of Paris.\n\nThe animation uses chrome-plated botanicals and fruit forms drifting across a vivid pink backdrop — keeping the visual language bold and premium while referencing the flavours of the product. Composited into real street footage for the final delivery.',
             video: 'Selected%20work/Other/Pepsi_Billboard_V06.mp4'

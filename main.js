@@ -1,22 +1,40 @@
 // ── Vimeo deferred load ──
 let _vimeoLoaded = false;
+let _vimeoFadedIn = false;
+const fadeInVimeo = () => {
+  if (_vimeoFadedIn) return;
+  _vimeoFadedIn = true;
+  document.querySelectorAll('.hero-vimeo-desktop, .hero-vimeo-mobile').forEach(el => {
+    el.classList.add('vimeo-loaded');
+  });
+};
 const loadVimeo = () => {
   if (_vimeoLoaded) return;
   _vimeoLoaded = true;
   document.querySelectorAll('iframe[data-src]').forEach(iframe => {
     iframe.src = iframe.dataset.src;
   });
-  setTimeout(() => {
-    document.querySelectorAll('.hero-vimeo-desktop, .hero-vimeo-mobile').forEach(el => {
-      el.classList.add('vimeo-loaded');
-    });
-  }, 900);
+  window.addEventListener('message', function onVimeoMsg(e) {
+    if (e.origin !== 'https://player.vimeo.com') return;
+    try {
+      const d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+      if (!d) return;
+      if (d.event === 'ready') {
+        window.removeEventListener('message', onVimeoMsg);
+        setTimeout(fadeInVimeo, 400);
+      } else if (d.event === 'play' || d.event === 'playProgress') {
+        window.removeEventListener('message', onVimeoMsg);
+        fadeInVimeo();
+      }
+    } catch {}
+  });
+  setTimeout(fadeInVimeo, 3500);
 };
 ['pointerdown','touchstart','keydown'].forEach(e =>
   window.addEventListener(e, loadVimeo, { once: true, passive: true })
 );
 
-// ── Etheral effects + Vimeo fallback timer ──
+// ── Etheral effects + Vimeo on page load ──
 window.addEventListener('load', () => {
   const siteEtheral = document.querySelector('.site-etheral');
   if (siteEtheral) {
@@ -25,7 +43,7 @@ window.addEventListener('load', () => {
   }
   const heroEtheral = document.getElementById('hero-etheral');
   if (heroEtheral) heroEtheral.style.display = '';
-  setTimeout(loadVimeo, 3000);
+  loadVimeo();
 });
 
 // ── Nav scroll effect ──
@@ -46,7 +64,7 @@ const revealObserver = new IntersectionObserver(entries => {
       revealObserver.unobserve(el);
     }
   });
-}, { threshold: 0.05, rootMargin: '0px 0px -16px 0px' });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
 document.querySelectorAll('.reveal-item, .reveal-left, .reveal-right, .reveal-scale').forEach(el => revealObserver.observe(el));
 
