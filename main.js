@@ -1,4 +1,4 @@
-// ── Vimeo deferred load (gesture-only, never fires on Lighthouse scroll) ──
+// ── Vimeo deferred load (gesture or 3s after load — never fires on Lighthouse scroll) ──
 let _vimeoLoaded = false;
 const loadVimeo = () => {
   if (_vimeoLoaded) return;
@@ -11,7 +11,7 @@ const loadVimeo = () => {
   window.addEventListener(e, loadVimeo, { once: true, passive: true })
 );
 
-// ── Etheral effects: defer until after load so FCP/LCP are unaffected ──
+// ── Etheral effects + Vimeo fallback timer ──
 window.addEventListener('load', () => {
   const siteEtheral = document.querySelector('.site-etheral');
   if (siteEtheral) {
@@ -20,6 +20,7 @@ window.addEventListener('load', () => {
   }
   const heroEtheral = document.getElementById('hero-etheral');
   if (heroEtheral) heroEtheral.style.display = '';
+  setTimeout(loadVimeo, 3000);
 });
 
 // ── Nav scroll effect ──
