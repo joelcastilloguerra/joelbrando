@@ -1487,6 +1487,10 @@ footer { display: flex; flex-direction: column; align-items: center; gap: 20px; 
 .scroll-top.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
 .scroll-top:hover { border-color: var(--chrome); color: var(--text-primary); }
 
+@media (max-width: 768px) {
+body::before { display: none; }
+}
+
 /* ── Scroll offset for fixed nav ── */
 #work, #about, #services, #contact {
   scroll-margin-top: 70px;
