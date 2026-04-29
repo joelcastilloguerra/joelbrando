@@ -448,11 +448,16 @@ background: var(--border);
 }
 
 
-/* Initial hidden states for GSAP ScrollTrigger reveals — no CSS transition, GSAP drives animation */
 .reveal-item  { opacity: 0; transform: translateY(36px); }
 .reveal-left  { opacity: 0; transform: translateX(-36px); }
 .reveal-right { opacity: 0; transform: translateX(36px); }
 .reveal-scale { opacity: 0; transform: scale(0.95); }
+.reveal-item, .reveal-left, .reveal-right, .reveal-scale {
+  transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-item.revealed, .reveal-left.revealed, .reveal-right.revealed, .reveal-scale.revealed {
+  opacity: 1; transform: none;
+}
 
 
 
@@ -1478,6 +1483,7 @@ footer { display: flex; flex-direction: column; align-items: center; gap: 20px; 
 
 @media (max-width: 768px) {
 body::before { display: none; }
+body::after  { display: none; }
 }
 
 /* ── Scroll offset for fixed nav ── */
@@ -2093,46 +2099,28 @@ body::before { display: none; }
     }, { passive: true });
     updateActiveNav();
 
-    // ── Scroll reveal via GSAP ScrollTrigger ──
+    // ── Scroll reveal via IntersectionObserver ──
     const _prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (_prefersReduced) {
       document.querySelectorAll('.reveal-item, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
-        el.style.opacity = '1'; el.style.transform = 'none';
+        el.classList.add('revealed');
+      });
+    } else {
+      const _revealObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const delay = parseInt(el.dataset.delay || 0);
+          setTimeout(() => el.classList.add('revealed'), delay);
+          _revealObs.unobserve(el);
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
+      document.querySelectorAll('.reveal-item, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+        _revealObs.observe(el);
       });
     }
 
     gsap.registerPlugin(ScrollTrigger);
-    const _ease = 'power3.out';
-    const _dur = 1.0;
-
-    gsap.utils.toArray('.reveal-item').forEach(el => {
-      gsap.to(el, {
-        opacity: 1, y: 0, duration: _dur, ease: _ease,
-        delay: parseInt(el.dataset.delay || 0) / 1000,
-        scrollTrigger: { trigger: el, start: 'top 92%', once: true }
-      });
-    });
-    gsap.utils.toArray('.reveal-left').forEach(el => {
-      gsap.to(el, {
-        opacity: 1, x: 0, duration: _dur, ease: _ease,
-        delay: parseInt(el.dataset.delay || 0) / 1000,
-        scrollTrigger: { trigger: el, start: 'top 92%', once: true }
-      });
-    });
-    gsap.utils.toArray('.reveal-right').forEach(el => {
-      gsap.to(el, {
-        opacity: 1, x: 0, duration: _dur, ease: _ease,
-        delay: parseInt(el.dataset.delay || 0) / 1000,
-        scrollTrigger: { trigger: el, start: 'top 92%', once: true }
-      });
-    });
-    gsap.utils.toArray('.reveal-scale').forEach(el => {
-      gsap.to(el, {
-        opacity: 1, scale: 1, duration: _dur, ease: _ease,
-        delay: parseInt(el.dataset.delay || 0) / 1000,
-        scrollTrigger: { trigger: el, start: 'top 92%', once: true }
-      });
-    });
 
 
     // ── Case Study Data ──
