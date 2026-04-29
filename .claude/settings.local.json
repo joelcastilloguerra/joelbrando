@@ -3,7 +3,9 @@
     "allow": [
       "WebFetch(domain:joelbrando.com)",
       "Bash(python -c \"from PIL import Image; img = Image.open\\('website_assets/favicon/Joel-Brando_logo_3D-favicon-2.png'\\); print\\(img.size\\)\")",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(node screenshot.mjs http://localhost:3000 og-preview)",
+      "Bash(node -e ' *)"
     ]
   }
 }
