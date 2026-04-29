@@ -66,17 +66,6 @@ animation: grain 0.8s steps(1) infinite;
 }
 
 
-html:not(.case-open)::before, html:not(.case-open)::after {
-content: '';
-position: fixed;
-left: 0; right: 0;
-height: 7px;
-background: #000;
-z-index: 9998;
-pointer-events: none;
-}
-html:not(.case-open)::before { top: 0; }
-html:not(.case-open)::after  { bottom: 0; }
 
 
 body::after {
