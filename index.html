@@ -7,6 +7,9 @@
   <meta name="description" content="Joel Brando — 3D artist and graphic designer based in Amsterdam, crafting visual identities, digital campaigns, and motion work for leading brands." />
   <link rel="icon" href="website_assets/favicon/Joel-Brando_logo_3D-favicon-square.png" />
   <link rel="preload" as="image" href="brand_assets/Joel-Brando_logo_3D_grain.webp" fetchpriority="high" />
+  <link rel="preconnect" href="https://player.vimeo.com" />
+  <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
+  <link rel="preconnect" href="https://fresnel.vimeocdn.com" crossorigin />
   <link rel="stylesheet" href="fonts.css" />
   <style>
 :root {
@@ -1582,11 +1585,11 @@ body::after  { display: none; }
   <section class="hero" id="home">
     <!-- Desktop hero video (landscape) -->
     <div class="hero-vimeo-desktop">
-      <iframe data-src="https://player.vimeo.com/video/1186165525?background=1&autoplay=1&loop=1&muted=1" title="Joel Brando showreel" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe src="https://player.vimeo.com/video/1186165525?background=1&autoplay=1&loop=1&muted=1" title="Joel Brando showreel" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
     <!-- Mobile hero video (portrait) -->
     <div class="hero-vimeo-mobile">
-      <iframe data-src="https://player.vimeo.com/video/1186165078?background=1&autoplay=1&loop=1&muted=1" title="Joel Brando showreel" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe src="https://player.vimeo.com/video/1186165078?background=1&autoplay=1&loop=1&muted=1" title="Joel Brando showreel" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
     <div class="hero-bg"></div>
 
@@ -1927,8 +1930,7 @@ body::after  { display: none; }
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script>
-    // ── Vimeo deferred load ──
-    let _vimeoLoaded = false;
+    // ── Vimeo fade-in ──
     let _vimeoFadedIn = false;
     const fadeInVimeo = () => {
       if (_vimeoFadedIn) return;
@@ -1937,41 +1939,24 @@ body::after  { display: none; }
         el.classList.add('vimeo-loaded');
       });
     };
-    const loadVimeo = () => {
-      if (_vimeoLoaded) return;
-      _vimeoLoaded = true;
-      document.querySelectorAll('iframe[data-src]').forEach(iframe => {
-        iframe.src = iframe.dataset.src;
-      });
-      // Fade in as soon as Vimeo player is ready (fires ~1s after src set)
-      window.addEventListener('message', function onVimeoMsg(e) {
-        if (e.origin !== 'https://player.vimeo.com') return;
-        try {
-          const d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-          if (!d) return;
-          if (d.event === 'ready') {
-            // Player initialised — give it 400ms for first frame then fade in
-            window.removeEventListener('message', onVimeoMsg);
-            setTimeout(fadeInVimeo, 400);
-          } else if (d.event === 'play' || d.event === 'playProgress') {
-            window.removeEventListener('message', onVimeoMsg);
-            fadeInVimeo();
-          }
-        } catch {}
-      });
-      // Fallback: always fade in after 3.5s
-      setTimeout(fadeInVimeo, 3500);
-    };
-    ['pointerdown','touchstart','keydown'].forEach(e =>
-      window.addEventListener(e, loadVimeo, { once: true, passive: true })
-    );
+    // Listen for Vimeo ready/play — iframes load immediately from HTML src
+    window.addEventListener('message', function onVimeoMsg(e) {
+      if (e.origin !== 'https://player.vimeo.com') return;
+      try {
+        const d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+        if (!d) return;
+        if (d.event === 'ready' || d.event === 'play' || d.event === 'playProgress') {
+          window.removeEventListener('message', onVimeoMsg);
+          fadeInVimeo();
+        }
+      } catch {}
+    });
+    // Fallback: fade in after 3s regardless
+    setTimeout(fadeInVimeo, 3000);
 
     // ── Etheral + Vimeo — start as early as possible ──
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Load Vimeo immediately so it buffers in background
-      loadVimeo();
-
-      // 2. Show hero etheral shader after buttons animate in (~1.1s)
+      // 1. Show hero etheral shader after buttons animate in (~1.1s)
       const heroEtheral = document.getElementById('hero-etheral');
       if (heroEtheral) {
         heroEtheral.style.display = '';
