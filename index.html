@@ -20,10 +20,34 @@
   <meta name="twitter:image"       content="https://pub-545adea3391841c896c875b02d24aa3a.r2.dev/website_assets/og-image.png" />
   <link rel="icon" href="website_assets/favicon/Joel-Brando_logo_3D-favicon-square.png" />
   <link rel="preload" as="image" href="brand_assets/Joel-Brando_logo_3D_grain.webp" fetchpriority="high" />
+  <!-- Preload critical fonts to avoid FOUT and improve FCP -->
+  <link rel="preload" as="font" href="brand_assets/fonts/fraunces.woff2" crossorigin type="font/woff2" />
+  <link rel="preload" as="font" href="brand_assets/fonts/fraunces-italic.woff2" crossorigin type="font/woff2" />
+  <link rel="preload" as="font" href="brand_assets/fonts/dm-sans.woff2" crossorigin type="font/woff2" />
+  <!-- Preload GSAP so scripts are in cache when parser reaches them at end of body -->
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" />
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" />
   <link rel="preconnect" href="https://player.vimeo.com" />
   <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
   <link rel="preconnect" href="https://fresnel.vimeocdn.com" crossorigin />
   <link rel="stylesheet" href="fonts.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Joel Brando",
+    "url": "https://www.joelbrando.com",
+    "jobTitle": "3D Artist & Graphic Designer",
+    "description": "3D artist and graphic designer based in Amsterdam, crafting visual identities, digital campaigns, and motion work for leading brands.",
+    "email": "info@joelbrando.com",
+    "telephone": "+31681784952",
+    "address": { "@type": "PostalAddress", "addressLocality": "Amsterdam", "addressCountry": "NL" },
+    "sameAs": [
+      "https://www.instagram.com/byjoelbrando",
+      "https://www.linkedin.com/in/joelcastilloguerra/"
+    ]
+  }
+  </script>
   <style>
 :root {
 --bg: #070709;
@@ -583,7 +607,8 @@ border-radius: 0;
 transform: translateZ(0);
 transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
 }
-.project-card:focus, .project-card:focus-visible { outline: none; }
+.project-card:focus { outline: none; }
+.project-card:focus-visible { outline: 2px solid rgba(200,196,188,0.55); outline-offset: 2px; }
 .project-card.col-8 { grid-column: span 8; }
 .project-card:hover {
 transform: translateZ(0) translateY(-3px);
@@ -1722,18 +1747,18 @@ body::after  { display: none; }
       <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/mizuno.png" alt="Mizuno" style="height:33px" /></div>
       <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/five-guys.png" alt="Five Guys" style="height:22px" /></div>
       <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/johnnie-walker.png" alt="Johnnie Walker" style="height:24px" /></div>
-      <!-- Set 2 — identical duplicate for seamless CSS loop -->
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/hm.png" alt="H&M" style="height:38px" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/puma.png" alt="Puma" style="height:35px" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/red-bull.png" alt="Red Bull" style="height:32px" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/tommy-hilfiger.png" alt="Tommy Hilfiger" style="height:38px" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/scotch-soda.png" alt="Scotch &amp; Soda" style="height:33px" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/polaroid.png" alt="Polaroid" style="height:24px" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/patagonia.png" alt="Patagonia" style="height:20px" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/don-julio.png" alt="Don Julio" style="height:38px" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/mizuno.png" alt="Mizuno" style="height:33px" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/five-guys.png" alt="Five Guys" style="height:22px" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/johnnie-walker.png" alt="Johnnie Walker" style="height:24px" /></div>
+      <!-- Set 2 — identical duplicate for seamless CSS loop; lazy-loaded since off-screen initially -->
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/hm.png" alt="H&M" style="height:38px" loading="lazy" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/puma.png" alt="Puma" style="height:35px" loading="lazy" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/red-bull.png" alt="Red Bull" style="height:32px" loading="lazy" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/tommy-hilfiger.png" alt="Tommy Hilfiger" style="height:38px" loading="lazy" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/scotch-soda.png" alt="Scotch &amp; Soda" style="height:33px" loading="lazy" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/polaroid.png" alt="Polaroid" style="height:24px" loading="lazy" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/patagonia.png" alt="Patagonia" style="height:20px" loading="lazy" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/don-julio.png" alt="Don Julio" style="height:38px" loading="lazy" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/mizuno.png" alt="Mizuno" style="height:33px" loading="lazy" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/five-guys.png" alt="Five Guys" style="height:22px" loading="lazy" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/johnnie-walker.png" alt="Johnnie Walker" style="height:24px" loading="lazy" decoding="async" /></div>
     </div>
   </div>
 
@@ -1747,12 +1772,12 @@ body::after  { display: none; }
   </section>
 
   <div class="services-grid" style="margin: 0 48px 24px;">
-    <div class="service-card service-card-link reveal-item" onclick="(function(){var e=document.getElementById('work-3d');window.scrollTo({top:e.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'});})()">
+    <div class="service-card service-card-link reveal-item" role="button" tabindex="0" onclick="(function(){var e=document.getElementById('work-3d');window.scrollTo({top:e.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'});})();" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
       <div class="service-num label">01</div>
       <h3 class="service-title">3D Design<br/>&amp; <em style="font-style:italic; color:var(--chrome)">Motion</em></h3>
       <p class="service-desc">Transforming ideas into high-end 3D animations and VFX. Specialized in building realistic digital scenes and seamlessly blending 3D elements with real-world footage.</p>
     </div>
-    <div class="service-card service-card-link reveal-item" data-delay="100" onclick="(function(){var e=document.getElementById('work-graphic');window.scrollTo({top:e.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'});})()">
+    <div class="service-card service-card-link reveal-item" data-delay="100" role="button" tabindex="0" onclick="(function(){var e=document.getElementById('work-graphic');window.scrollTo({top:e.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'});})();" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
       <div class="service-num label">02</div>
       <h3 class="service-title">Graphic<br/><em style="font-style:italic; color:var(--chrome)">Design</em></h3>
       <p class="service-desc">Combining visuals and ideas to create impactful work that captures attention — from brand identities to retail campaigns and packaging.</p>
@@ -1763,7 +1788,7 @@ body::after  { display: none; }
   <section class="section" id="work" style="padding-bottom: 16px;">
     <div class="section-header">
       <h2 style="font-size: clamp(36px,4vw,60px);">Selected Work</h2>
-      <span class="label">Portfolio — 2022–<script>document.write(/\d{4}/.exec(Date())[0])</script></span>
+      <span class="label">Portfolio — 2022–<span class="current-year"></span></span>
     </div>
   </section>
 
@@ -1776,7 +1801,7 @@ body::after  { display: none; }
 
   <div class="work-grid" style="margin: 0 48px;">
     <!-- Row 1: 7 + 5 -->
-    <div class="project-card col-6 reveal-item" data-case="hm" onclick="openCase(this.dataset.case)">
+    <div class="project-card col-6 reveal-item" data-case="hm" role="button" tabindex="0" onclick="openCase(this.dataset.case)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCase(this.dataset.case)}">
       <video class="project-img" data-src="Selected%20work/Beauty/hm-beauty-card-thumb.mp4" autoplay loop muted playsinline style="aspect-ratio:3/2; object-position:top;"></video>
       <div class="project-overlay"></div>
       <div class="project-info">
@@ -1786,7 +1811,7 @@ body::after  { display: none; }
         <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
       </div>
     </div>
-    <div class="project-card col-6 reveal-item" data-delay="100" data-case="five-guys" onclick="openCase(this.dataset.case)">
+    <div class="project-card col-6 reveal-item" data-delay="100" data-case="five-guys" role="button" tabindex="0" onclick="openCase(this.dataset.case)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCase(this.dataset.case)}">
       <video class="project-img" data-src="Selected%20work/Five%20Guys/five-guys-card-thumb.mp4" autoplay loop muted playsinline style="aspect-ratio:3/2;"></video>
       <div class="project-overlay"></div>
       <div class="project-info">
@@ -1798,7 +1823,7 @@ body::after  { display: none; }
     </div>
 
     <!-- Row 2: 5 + 7 -->
-    <div class="project-card col-6 reveal-item" data-case="sightings" onclick="openCase(this.dataset.case)">
+    <div class="project-card col-6 reveal-item" data-case="sightings" role="button" tabindex="0" onclick="openCase(this.dataset.case)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCase(this.dataset.case)}">
       <video class="project-img" data-src="Selected%20work/Other/sightings-card-thumb.mp4" autoplay loop muted playsinline style="aspect-ratio:3/2;"></video>
       <div class="project-overlay"></div>
       <div class="project-info">
@@ -1808,7 +1833,7 @@ body::after  { display: none; }
         <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
       </div>
     </div>
-    <div class="project-card col-6 reveal-item" data-delay="100" data-case="personal" onclick="openCase(this.dataset.case)">
+    <div class="project-card col-6 reveal-item" data-delay="100" data-case="personal" role="button" tabindex="0" onclick="openCase(this.dataset.case)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCase(this.dataset.case)}">
       <video class="project-img" data-src="Selected%20work/Personal/personal-card-thumb.mp4" autoplay loop muted playsinline style="aspect-ratio:3/2;"></video>
       <div class="project-overlay"></div>
       <div class="project-info">
@@ -1829,7 +1854,7 @@ body::after  { display: none; }
 
   <div class="work-grid" style="margin: 0 48px;">
     <!-- Row 1: 6 + 6 -->
-    <div class="project-card col-6 reveal-item" data-case="tommy-pride" onclick="openCase(this.dataset.case)">
+    <div class="project-card col-6 reveal-item" data-case="tommy-pride" role="button" tabindex="0" onclick="openCase(this.dataset.case)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCase(this.dataset.case)}">
       <img class="project-img" data-src="Selected%20work/Tommy%20Hilfiger/ezgif-66ac8c9f763915.gif" alt="Tommy Pride" style="aspect-ratio:3/2;" />
       <div class="project-overlay"></div>
       <div class="project-info">
@@ -1839,7 +1864,7 @@ body::after  { display: none; }
         <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
       </div>
     </div>
-    <div class="project-card col-6 reveal-item" data-delay="100" data-case="johnnie-walker" onclick="openCase(this.dataset.case)">
+    <div class="project-card col-6 reveal-item" data-delay="100" data-case="johnnie-walker" role="button" tabindex="0" onclick="openCase(this.dataset.case)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCase(this.dataset.case)}">
       <img class="project-img" data-src="Selected%20work/Johnnie%20Walker/IMGL3923.webp" alt="Johnnie Walker Blue Label × Friandries" style="aspect-ratio:3/2;" />
       <div class="project-overlay"></div>
       <div class="project-info">
@@ -1851,7 +1876,7 @@ body::after  { display: none; }
     </div>
 
     <!-- Row 2: 6 + 6 -->
-    <div class="project-card col-6 reveal-item" data-case="posters" onclick="openCase(this.dataset.case)">
+    <div class="project-card col-6 reveal-item" data-case="posters" role="button" tabindex="0" onclick="openCase(this.dataset.case)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCase(this.dataset.case)}">
       <img class="project-img" data-src="Selected%20work/Posters/DotInk_James_Dean_Poster_5512x7874px.webp" alt="Print Work" style="aspect-ratio:3/2; object-position: top;" />
       <div class="project-overlay"></div>
       <div class="project-info">
@@ -1861,7 +1886,7 @@ body::after  { display: none; }
         <div class="project-cta">View Case Study <svg width="12" height="8" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
       </div>
     </div>
-    <div class="project-card col-6 reveal-item" data-delay="100" data-case="personal-graphic" onclick="openCase(this.dataset.case)">
+    <div class="project-card col-6 reveal-item" data-delay="100" data-case="personal-graphic" role="button" tabindex="0" onclick="openCase(this.dataset.case)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCase(this.dataset.case)}">
       <img class="project-img" data-src="Selected%20work/Personal%20graphic%20work/ISSEY-87.webp" alt="Personal Work — Graphic" style="aspect-ratio:3/2;" />
       <div class="project-overlay"></div>
       <div class="project-info">
@@ -1966,7 +1991,7 @@ body::after  { display: none; }
       <li><a href="#services">Services</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <span class="footer-copy">&copy; <script>document.write(/\d{4}/.exec(Date())[0])</script> Joel Brando. All rights reserved.</span>
+    <span class="footer-copy">&copy; <span class="current-year"></span> Joel Brando. All rights reserved.</span>
   </footer>
 
   <!-- ── CURSOR GLOW ── -->
@@ -2082,6 +2107,9 @@ body::after  { display: none; }
         requestAnimationFrame(tick);
       })();
     });
+
+    // ── Current year — replaces document.write() calls ──
+    document.querySelectorAll('.current-year').forEach(el => { el.textContent = new Date().getFullYear(); });
 
     // ── Mobile nav toggle ──
     (function () {
@@ -2564,7 +2592,7 @@ body::after  { display: none; }
           ? `<img class="cs-section-img" src="${asset(s.img)}" alt="${s.title}" loading="lazy" />`
           : '';
         const galleryHtml = s.gallery && s.gallery.length
-          ? `<div class="cs-gallery cs-gallery-${s.gallery.length}"${s.galleryWidth ? ` style="width:${s.galleryWidth};left:auto;transform:none;"` : ''}>${s.gallery.map(url => `<img class="cs-gallery-img" src="${asset(url)}" alt="" loading="lazy"${s.galleryAspect ? ` style="aspect-ratio:${s.galleryAspect};object-fit:cover;object-position:center top;"` : ''} />`).join('')}</div>`
+          ? `<div class="cs-gallery cs-gallery-${s.gallery.length}"${s.galleryWidth ? ` style="width:${s.galleryWidth};left:auto;transform:none;"` : ''}>${s.gallery.map((url, gi) => `<img class="cs-gallery-img" src="${asset(url)}" alt="${s.title} — image ${gi + 1}" loading="lazy"${s.galleryAspect ? ` style="aspect-ratio:${s.galleryAspect};object-fit:cover;object-position:center top;"` : ''} />`).join('')}</div>`
           : '';
         const videoHtml = s.video
           ? `<video class="cs-section-video" src="${asset(s.video)}" autoplay loop muted playsinline controls></video>`
