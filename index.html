@@ -2095,20 +2095,31 @@ body::after  { display: none; }
         if (!track) return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         const wrap  = track.parentElement;
-        const SPEED = 0.6; // px per frame (~36px/s at 60fps)
+        const SPEED = 0.6;
         let x = 0, paused = false;
         wrap.addEventListener('mouseenter', () => paused = true);
         wrap.addEventListener('mouseleave', () => paused = false);
-        function tick() {
-          if (!paused) {
-            x -= SPEED;
-            const half = track.scrollWidth / 2;
-            if (-x >= half) x = 0;
-            track.style.transform = 'translateX(' + x + 'px)';
+
+        // Wait until all ticker images have their intrinsic dimensions so
+        // scrollWidth is accurate before we start. If images are already
+        // cached/loaded this resolves immediately.
+        const imgs = Array.from(track.querySelectorAll('img'));
+        Promise.all(imgs.map(img =>
+          img.complete ? Promise.resolve() :
+          new Promise(r => { img.onload = r; img.onerror = r; })
+        )).then(() => {
+          const half = track.scrollWidth / 2;
+          if (half <= 0) return; // nothing to scroll
+          function tick() {
+            if (!paused) {
+              x -= SPEED;
+              if (-x >= half) x = 0;
+              track.style.transform = 'translateX(' + x + 'px)';
+            }
+            requestAnimationFrame(tick);
           }
           requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
+        });
       })();
     });
 
