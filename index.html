@@ -1750,18 +1750,19 @@ body::after  { display: none; }
       <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/mizuno.png" alt="Mizuno" style="height:33px" /></div>
       <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/five-guys.png" alt="Five Guys" style="height:22px" /></div>
       <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/johnnie-walker.png" alt="Johnnie Walker" style="height:24px" /></div>
-      <!-- Set 2 — identical duplicate for seamless CSS loop; lazy-loaded since off-screen initially -->
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/hm.png" alt="H&M" style="height:38px" loading="lazy" decoding="async" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/puma.png" alt="Puma" style="height:35px" loading="lazy" decoding="async" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/red-bull.png" alt="Red Bull" style="height:32px" loading="lazy" decoding="async" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/tommy-hilfiger.png" alt="Tommy Hilfiger" style="height:38px" loading="lazy" decoding="async" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/scotch-soda.png" alt="Scotch &amp; Soda" style="height:33px" loading="lazy" decoding="async" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/polaroid.png" alt="Polaroid" style="height:24px" loading="lazy" decoding="async" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/patagonia.png" alt="Patagonia" style="height:20px" loading="lazy" decoding="async" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/don-julio.png" alt="Don Julio" style="height:38px" loading="lazy" decoding="async" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/mizuno.png" alt="Mizuno" style="height:33px" loading="lazy" decoding="async" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/five-guys.png" alt="Five Guys" style="height:22px" loading="lazy" decoding="async" /></div>
-      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/johnnie-walker.png" alt="Johnnie Walker" style="height:24px" loading="lazy" decoding="async" /></div>
+      <!-- Set 2 — identical duplicate for seamless loop; must NOT be lazy-loaded
+           because the JS uses scrollWidth to calculate the reset point -->
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/hm.png" alt="H&M" style="height:38px" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/puma.png" alt="Puma" style="height:35px" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/red-bull.png" alt="Red Bull" style="height:32px" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/tommy-hilfiger.png" alt="Tommy Hilfiger" style="height:38px" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/scotch-soda.png" alt="Scotch &amp; Soda" style="height:33px" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/polaroid.png" alt="Polaroid" style="height:24px" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/patagonia.png" alt="Patagonia" style="height:20px" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/don-julio.png" alt="Don Julio" style="height:38px" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/mizuno.png" alt="Mizuno" style="height:33px" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/five-guys.png" alt="Five Guys" style="height:22px" decoding="async" /></div>
+      <div class="logo-ticker-item"><img class="logo-ticker-img" src="brand_assets/logos/johnnie-walker.png" alt="Johnnie Walker" style="height:24px" decoding="async" /></div>
     </div>
   </div>
 
