@@ -2099,27 +2099,18 @@ body::after  { display: none; }
         let x = 0, paused = false;
         wrap.addEventListener('mouseenter', () => paused = true);
         wrap.addEventListener('mouseleave', () => paused = false);
-
-        // Wait until all ticker images have their intrinsic dimensions so
-        // scrollWidth is accurate before we start. If images are already
-        // cached/loaded this resolves immediately.
-        const imgs = Array.from(track.querySelectorAll('img'));
-        Promise.all(imgs.map(img =>
-          img.complete ? Promise.resolve() :
-          new Promise(r => { img.onload = r; img.onerror = r; })
-        )).then(() => {
-          const half = track.scrollWidth / 2;
-          if (half <= 0) return; // nothing to scroll
-          function tick() {
-            if (!paused) {
-              x -= SPEED;
-              if (-x >= half) x = 0;
-              track.style.transform = 'translateX(' + x + 'px)';
-            }
-            requestAnimationFrame(tick);
+        function tick() {
+          if (!paused) {
+            x -= SPEED;
+            const half = track.scrollWidth / 2;
+            // Guard: if images haven't loaded yet scrollWidth can be 0,
+            // which would make the reset fire every frame and pin x at 0.
+            if (half > 0 && -x >= half) x = 0;
+            track.style.transform = 'translateX(' + x + 'px)';
           }
           requestAnimationFrame(tick);
-        });
+        }
+        requestAnimationFrame(tick);
       })();
     });
 
