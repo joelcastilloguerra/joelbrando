@@ -442,22 +442,12 @@ position: relative;
 isolation: isolate;
 transform: translateZ(0);
 }
-@keyframes ticker-scroll {
-0%   { transform: translateX(0); }
-100% { transform: translateX(-50%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .logo-ticker-track { animation: none !important; }
-}
-
 .logo-ticker-track {
 display: flex;
 align-items: center;
 height: 112px;
-width: max-content;
-animation: ticker-scroll 28s linear infinite;
+will-change: transform;
 }
-.logo-ticker-wrap:hover .logo-ticker-track { animation-play-state: paused; }
 .logo-ticker-item {
 flex-shrink: 0;
 display: flex;
@@ -1026,7 +1016,8 @@ background: linear-gradient(to bottom, rgba(7,7,9,0.5) 0%, transparent 25%, rgba
 pointer-events: none;
 width: 100%;
 height: 100%;
-transform: translateZ(0);
+transform: translateZ(0) scale(1.01);
+transform-origin: center;
 }
 
 
@@ -2098,7 +2089,38 @@ body::after  { display: none; }
         }
       }
 
-      // ── Logo ticker — CSS animation (ticker-scroll keyframe), no JS needed ──
+      // ── Logo ticker — JS-driven for reliable infinite loop on all browsers ──
+      (function () {
+        const track = document.querySelector('.logo-ticker-track');
+        if (!track) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const wrap  = track.parentElement;
+        const SPEED = 0.6;
+        let x = 0, paused = false;
+        wrap.addEventListener('mouseenter', () => paused = true);
+        wrap.addEventListener('mouseleave', () => paused = false);
+
+        // Wait until all ticker images have their intrinsic dimensions so
+        // scrollWidth is accurate before we start. If images are already
+        // cached/loaded this resolves immediately.
+        const imgs = Array.from(track.querySelectorAll('img'));
+        Promise.all(imgs.map(img =>
+          img.complete ? Promise.resolve() :
+          new Promise(r => { img.onload = r; img.onerror = r; })
+        )).then(() => {
+          const half = track.scrollWidth / 2;
+          if (half <= 0) return; // nothing to scroll
+          function tick() {
+            if (!paused) {
+              x -= SPEED;
+              if (-x >= half) x = 0;
+              track.style.transform = 'translateX(' + x + 'px)';
+            }
+            requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        });
+      })();
     });
 
     // ── Current year — replaces document.write() calls ──
