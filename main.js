@@ -1,3 +1,4 @@
+console.log('main.js loaded');
 // ── Vimeo deferred load ──
 let _vimeoLoaded = false;
 let _vimeoFadedIn = false;
@@ -70,11 +71,8 @@ document.querySelectorAll('.reveal-item, .reveal-left, .reveal-right, .reveal-sc
 
 
 
-const cases = window.CASES;
-const ASSETS_BASE = location.hostname === 'localhost'
-  ? 'website_assets/'
-  : 'https://pub-545adea3391841c896c875b02d24aa3a.r2.dev/website_assets/';
-const asset = url => url && !url.startsWith('http') ? ASSETS_BASE + url : url;
+// (These lines have been moved into the CASES guard block below to avoid
+// ReferenceError when window.CASES is not yet defined.)
 
 
 // ── Image Lightbox ──
@@ -119,8 +117,13 @@ window.addEventListener('popstate', (event) => {
   }
 });
 
-// ── Case Study Open / Close ──
-function openCase(id) {
+123 | if (typeof window.CASES !== 'undefined') {
+  // ── Case Study Open / Close ──
+  // Bring CASES, asset helper, and constants inside the guard so the
+  // script does not throw a ReferenceError when window.CASES has not yet
+  // been defined by the inline script.
+  const cases = window.CASES;
+  function openCase(id) {
   const data = cases[id];
   if (!data) return;
 
@@ -218,10 +221,11 @@ function closeCase() {
   document.body.style.overflow = '';
   document.body.classList.remove('case-open');
   document.documentElement.classList.remove('case-open');
-  history.replaceState(null, '', location.pathname);
-}
-
-// ── Lazy-resolve data-src elements (excludes iframes which use gesture loading) ──
+229 |   history.replaceState(null, '', location.pathname);
+230 | }
+231 | }
+232 | 
+233 |   // ── Lazy-resolve data-src elements (excludes iframes which use gesture loading) ──
 const mediaObserver = new IntersectionObserver((entries, obs) => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
@@ -231,14 +235,15 @@ const mediaObserver = new IntersectionObserver((entries, obs) => {
   });
 }, { rootMargin: '400px 0px' });
 document.querySelectorAll('[data-src]:not(iframe)').forEach(el => mediaObserver.observe(el));
-
-// ── Open case study from URL hash on load ──
-if (location.hash) {
+243 | if (location.hash) {
   const id = location.hash.slice(1);
-  if (cases[id]) {
+  const cases = window.CASES; // local reference if defined
+  if (cases && cases[id]) {
     openCase(id);
     // Replace the pushState openCase just added so closing doesn't re-open
     history.replaceState({ caseStudy: id }, '', '#' + id);
+  }
+}
   }
 }
 
@@ -293,5 +298,6 @@ document.addEventListener('keydown', e => {
   });
 })();
 
-window.openCase = openCase;
-window.closeCase = closeCase;
+  window.openCase = openCase;
+  window.closeCase = closeCase;
+}
